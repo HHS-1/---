@@ -6,6 +6,9 @@
     
     <%
     	request.setCharacterEncoding("utf-8");
+	    HttpSession se = request.getSession();
+		String user_id = (String)se.getAttribute("user_id");
+    
     	boolean agree_ck = false;
     	//약관동의 정보
   

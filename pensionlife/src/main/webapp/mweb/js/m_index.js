@@ -1,17 +1,3 @@
-$(function(){
-	//1:1문의 select 부분
-	$(".qa_part > li").click(function(){
-		$n = $(this).index();
-		$(".qa_part > li").attr("class","");
-		$(".qa_part > li").eq($n).attr("class","onselect");
-	});
-
-	//햄버거 버튼 부분
-	$("#menu_slide").click(function(){
-		$("#menus_bar").fadeToggle();
-	});
-
-});
 
 
 //로그인 팝업
@@ -45,7 +31,6 @@ function page_location(n){
 //전체 선택
 function all_check(){
 	var ck_all = document.getElementById("ck_all");
-	
 	for(var f = 1 ; f <= 5 ; f++){
 		document.getElementById("ck" + f).checked = ck_all.checked;
 	}
@@ -92,6 +77,60 @@ function regist_agree(){
 
 
 
+//middle 펜션 리스트 클릭시 예약 페이지로 이동
+function reservation(c){
+	var frm=document.createElement("form");
+	frm.setAttribute("method","post");
+	frm.setAttribute("action","./m_reservation.jsp");
+	var input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "hpname");
+            input.setAttribute("value", c);
+			frm.append(input);
+            document.body.append(frm);
+			frm.submit();
+}
+
+$(()=>{
+		//로그아웃
+	$("#logout").click(()=>{
+		
+		$.ajax({
+			type : "post",
+			url : "./sign_out.do",
+			headers : {
+			"Content-Type" : "application/json",
+			"X-HTTP-Method-Override" : "POST"},
+			data : {
+				test : "test"
+			},
+			success : function(){
+				localStorage.removeItem("data_autoLogin");
+				location.reload();		
+			},
+			error : ((error)=>{
+				console.log(error);
+			}),
+		});
+		
+	});
+
+	$(function(){
+		//1:1문의 select 부분
+		$(".qa_part > li").click(function(){
+			$n = $(this).index();
+			$(".qa_part > li").attr("class","");
+			$(".qa_part > li").eq($n).attr("class","onselect");
+		});
+	
+		//햄버거 버튼 부분
+		$("#menu_slide").click(function(){
+			$("#menus_bar").fadeToggle();
+		});
+	
+	});
+
+})
 
 
 

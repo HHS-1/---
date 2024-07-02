@@ -76,10 +76,13 @@ header {
     width: 10%;
 }
 .top_menu > li:nth-of-type(2){
-    width: 80%;
+    width: 40%;
 }
 .top_menu > li:nth-of-type(3){
-    width: 10%;
+    width: 30%;
+}
+#hidden_space{
+	width : 20%;
 }
 .main {
 	display: block;
@@ -266,6 +269,11 @@ footer > ul > li{
     line-height: 30px;
     font-size: 15px;
     font-weight: bolder;
+}
+.logout{
+	width : 100px;
+	font-size : 13px;
+	font-weight : bold;
 }
 
 }

@@ -15,9 +15,10 @@
 <header>
 <ul class="top_menu">
     <li id="menu_slide"><img src="../img/menu.svg"></li>
-    <li><img src="../img/header_logo.png"></li>
-    <%if(user_id != null){ %>
-    <li><%=user_id %>님 환영합니다.</li>
+    <span id="hidden_space"></span>
+    <li><a href='./m_index.jsp'><img src="../img/header_logo.png"></a></li>
+    <%if(user_name != null){ %>
+    <li class="logout"><span><%=user_name %>님</span> &nbsp;<span id="logout">[로그아웃]</span></li>
     <%}else{ %>
     <li onclick="login_pop();"><img src="../img/login.svg"></li>
     <%} %>
@@ -32,7 +33,7 @@
 		<ol>
 		<li><input type="text" class="login_input" name="login_info" placeholder="아이디를 입력하세요"></li>
 		<li><input type="password" class="login_input" name="login_info" placeholder="패스워드를 입력하세요"></li>
-		<li><label><input type="checkbox" class="login_check"> 자동로그인</label></li>
+		<li><label><input type="checkbox" name="login_auto" class="login_check" value="Y"> 자동로그인</label></li>
 		<li><input type="submit" value="로그인" class="login_btn"></li>
 		<li class="login_info">
 		<span onclick="page_location(1)">아이디 찾기</span>
@@ -43,8 +44,10 @@
 </aside>
 </form>
 <script>
+//로그인
 function login(){
 	frm_login.method = "post";
 	frm_login.action = "./sign_in.do";
 }
+
 </script>

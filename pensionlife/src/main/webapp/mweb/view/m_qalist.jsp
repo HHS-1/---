@@ -1,16 +1,53 @@
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="model.dbconfig" %>
+<%
+	HttpSession se = request.getSession();
+	String user_id = (String)se.getAttribute("user_id");
+	dbconfig db = new dbconfig();
+	Connection dbcon = db.getdbconfig();
+
+	request.setCharacterEncoding("utf-8");
+	response.setContentType("text/html;charset=utf-8");
+	
+	//리스트 5개씩 출력
+	int pno = 1;
+	if(request.getParameter("pno") != null){
+		pno = Integer.parseInt(request.getParameter("pno")); 
+	}
+	
+	int pages = (pno-1)*5;
+	int list = 5;
+	
+	//DB데이터 역순으로 5개씩 가져옴
+	String sql = "select * from qa_board order by qidx desc limit ?,?";
+	PreparedStatement pst = dbcon.prepareStatement(sql);
+	pst.setInt(1, pages);
+	pst.setInt(2, list);
+	ResultSet rs = pst.executeQuery();
+	
+	//DB qa_board 데이터개수 파악
+	String sql2 = "select count(*) as ctn from qa_board";
+	pst = dbcon.prepareStatement(sql2);
+	ResultSet rs2 = pst.executeQuery();
+	rs2.next();
+	
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
-    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=2">
-    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=2">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
+    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=4">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
+    <script src="../js/m_qalist.js?v=1"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -31,24 +68,55 @@
             <li>등록일</li>
             <li>처리</li>
         </ul>
+        <%
+        while(rs.next()){
+        %>
         <ul class="qa_lists2">
-            <li>질문제목이 출력 됩니다 15자까지만...</li> 
-            <li>홍길동</li>
-            <li>2024-07-02</li>
-            <li>미답변</li>
+            <li class="qa_view" data-load="<%=rs.getString("qidx")%>">
+            <%
+            	//15자 초과하면 ...으로 처리
+				if(rs.getString("qtitle").length() > 15){
+					out.print(rs.getString("qtitle").substring(0,15)+"...");
+				}else{
+					out.print(rs.getString("qtitle"));
+				}
+			%>
+            </li>
+            <li><%=rs.getString("user_name") %></li>
+            <li><%=rs.getDate("qdate") %></li>
+            <li><%=rs.getString("qhandle") %></li>
         </ul>
-        <ul class="qa_lists2">
-            <li>질문제목이 출력 됩니다 15자까지만...</li> 
-            <li>홍길동</li>
-            <li>2024-07-01</li>
-            <li style="color: red;">답변완료</li>
-        </ul>
-        <div class="member_agreebtn">문의하기</div>
-    </div>  
+        <%
+        }
+        %>
+        <table border="1" cellpadding="0" cellspacing="0">
+			<tr>
+				<% 
+				double alldata = rs2.getInt("ctn");
+				int pg = (int)Math.ceil(alldata/list);
+				for(int f=1; f<=pg; f++){ 
+				%>
+				<!-- 5개 리스트 출력 페이지 넘버 -->
+				<td width="20" align="center"><a href="./m_qalist.jsp?pno=<%=f %>"><%=f %></a></td>
+				<%
+				} 
+				%>
+			</tr>
+		</table>
+        <div class="member_agreebtn" onclick="member_agreebtn()">문의하기</div>
+    </div>
 </section>
+<form id="frm">
+<input type="hidden" id="hd" name="qidx" value="">
+</form>
 <!-- 하단 시작 -->
 <%@ include file="../Qmenu.jsp" %>
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
 </html>
+<%
+rs.close();
+pst.close();
+dbcon.close();
+%>

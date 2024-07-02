@@ -1,5 +1,24 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.PreparedStatement"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model.dbconfig" %>
+ <% //m_reservation
+ 	request.setCharacterEncoding("utf-8");
+	HttpSession se = request.getSession();
+	String user_id = (String)se.getAttribute("user_id");
+	String user_name = (String)se.getAttribute("user_name");
+	
+ 	dbconfig db=new dbconfig();
+	Connection dbcon=db.getdbconfig();
+ 	String pname=request.getParameter("hpname");
+	String sql="select * from pension_list where pname=?";
+	PreparedStatement ps=dbcon.prepareStatement(sql);
+	ps.setString(1, pname);
+	ResultSet rs=ps.executeQuery();
+ 
+ %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,7 +28,8 @@
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
     <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=2">
     <link rel="stylesheet" type="text/css" href="../css/m_reservation.css?v=2">
-    <script src="../js/m_index.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/m_index.js?v=3"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -27,20 +47,17 @@
     <li>
     <span class="reser_part1">펜션명</span>
     <span class="reser_part2">
-    [강원 평창군] 한화리조트 평창
+    <%=request.getParameter("hpname") %>
     </span>
     </li>
     <li>
     <span class="reser_part1">객실선택</span>
     <span class="reser_part2">
-    <select class="reser_select">
+    <select onchange="rinfo(this.value)" class="reser_select">
     <option value="">객실선택</option>
-    <option>로즈힙 101호</option>
-    <option>튤립 102호</option>
-    <option>레몬 201호</option>
-    <option>만다리 202호</option>
-    <option>피치 301호</option>
-    <option>올리비아 302호</option>
+    <%while(rs.next()){ %>
+    <option value="<%=rs.getString("rname") %>"><%=rs.getString("rname") %></option>
+    <%} %>
     </select>
     </span>
     </li>
@@ -52,14 +69,14 @@
     </li>
     <li>
     <span class="reser_part1">객실구조</span>
-    <span class="reser_part2">
-    방2, 주방1, 화장실1, 거실1
+    <span id="rdetail" class="reser_part2">
+    원하시는 객실을 선택하세요
     </span>
     </li>
     <li>
     <span class="reser_part1">입실인원</span>
-    <span class="reser_part2">
-    기준 3인 / 최대 4인
+    <span id="rsp_rmp" class="reser_part2">
+    원하시는 객실을 선택하세요
     </span>
     </li>
     <li>
@@ -70,8 +87,8 @@
     </li>
     <li>
     <span class="reser_part1">구매금액</span>
-    <span class="reser_part2">
-    165,600원
+    <span id="rprice" class="reser_part2">
+    -
     </span>
     </li>
     </ol>
@@ -81,13 +98,7 @@
     <span class="reser_part1">객실선택</span>
     <span class="reser_part2">
     <select class="reser_select">
-    <option value="">객실선택</option>
-    <option>로즈힙 101호</option>
-    <option>튤립 102호</option>
-    <option>레몬 201호</option>
-    <option>만다리 202호</option>
-    <option>피치 301호</option>
-    <option>올리비아 302호</option>
+    <option id="selectroom" value="">객실선택</option>
     </select>
     </span>
     </li>
@@ -106,13 +117,8 @@
     <li>
     <span class="reser_part1">입실인원</span>
     <span class="reser_part2">
-    <select class="reser_select">
+    <select id="pselect" class="reser_select">
     <option value="">입실 인원선택</option>
-    <option>1인</option>
-    <option>2인</option>
-    <option>3인</option>
-    <option>4인</option>
-    <option>5인</option>
     </select>
     </span>
     </li>
@@ -131,4 +137,43 @@
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
+<script src="./m_reservation.js?v=1"></script>
+<script>
+function rinfo(z) {
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (http.readyState == 4 && http.status == 200) {
+            var responseData = JSON.parse(http.responseText);
+            var rdetail = document.getElementById("rdetail");
+            var rsp_rmp = document.getElementById("rsp_rmp");
+            var rprice = document.getElementById("rprice");
+            var pea = "기준" + responseData.rsp + " / 최대" + responseData.rmp + "인";
+            rdetail.innerText = responseData.rdetail;
+            rsp_rmp.innerText = pea;
+            rprice.innerText = responseData.rprice;
+
+            var pselect = document.getElementById("pselect");
+            pselect.innerHTML = ""; // 기존 옵션 초기화
+            for (var w = parseInt(responseData.rsp); w <= parseInt(responseData.rmp); w++) {
+                var option = document.createElement("option");
+                option.text = w;
+                option.value = w;
+                pselect.appendChild(option);
+            }
+        }
+    }
+    http.open("POST", "./room_info.do", true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.send("rname=" + z);
+
+    var selectroom = document.getElementById("selectroom");
+    selectroom.innerText = z;
+    selectroom.value = z;
+}
+</script>
 </html>
+<%
+rs.close();
+ps.close();
+dbcon.close();
+%>
