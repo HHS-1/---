@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+	<display-name>pensionlife</display-name>
+	<servlet>
+	<servlet-name>sign_up</servlet-name>
+	<servlet-class>sign.sign_up</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>sign_up</servlet-name>
+	<url-pattern>/mweb/view/sign_up.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>sign_in</servlet-name>
+	<servlet-class>sign.sign_in</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>sign_in</servlet-name>
+	<url-pattern>/mweb/view/sign_in.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>page4</servlet-name>
+	<servlet-class>page.page4</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>page4</servlet-name>
+	<url-pattern>/page4.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>ajax2</servlet-name>
+	<servlet-class>page.ajax2</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>ajax2</servlet-name>
+	<url-pattern>/ajax2.do</url-pattern>
+	</servlet-mapping>
+</web-app>
