@@ -38,6 +38,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+	<servlet-name>find_id</servlet-name>
+	<servlet-class>sign.find_id</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>find_id</servlet-name>
+	<url-pattern>/mweb/view/find_id.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	<servlet-name>reservation</servlet-name>
 	<servlet-class>reservation.room_info</servlet-class>
 	</servlet>

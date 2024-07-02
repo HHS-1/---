@@ -36,8 +36,8 @@
 		<li><label><input type="checkbox" name="login_auto" class="login_check" value="Y"> 자동로그인</label></li>
 		<li><input type="submit" value="로그인" class="login_btn"></li>
 		<li class="login_info">
-		<span onclick="page_location(1)">아이디 찾기</span>
-		<span onclick="page_location(2)">회원가입</span>
+		<span onclick="location.href='./m_idsearch.jsp'">아이디 찾기</span>
+		<span onclick="location.href='./m_join.jsp'">회원가입</span>
 		</li>
 		</ol>
 	</div>

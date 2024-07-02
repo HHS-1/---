@@ -92,7 +92,7 @@ function reservation(c){
 }
 
 $(()=>{
-		//로그아웃
+	//로그아웃
 	$("#logout").click(()=>{
 		
 		$.ajax({
@@ -114,6 +114,31 @@ $(()=>{
 		});
 		
 	});
+	
+	//아이디 찾기
+	$("#btn_findId").click(()=>{
+		const user_name = document.querySelector("#user_name").value;
+		const user_tel = document.querySelector("#user_tel").value;
+		const user_email = document.querySelector("#user_email").value;
+		const id_searchview = document.querySelector("#id_searchview").value;
+		$.ajax({
+			type : "post",
+			url : "./find_id.do",
+			data : {
+				user_name : user_name,
+				user_tel : user_tel,
+				user_email : user_email,
+			},
+			success : function($user_id){
+				console.log($user_id);
+				//id_searchview = user_id;
+			},
+			error : ((error)=>{
+				console.log(error);
+			}),
+		});
+	})
+	
 
 	$(function(){
 		//1:1문의 select 부분
