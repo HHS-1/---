@@ -5,7 +5,7 @@
 	String user_id = (String)se.getAttribute("user_id");
 	String user_name = (String)se.getAttribute("user_name");
 	
-	if(user_id != null){
+	if(user_id != null){ // 로그인 상태로 접속 불가
 		out.print("<script>location.href = './m_index.jsp';</script>");
 	}
     %>

@@ -29,7 +29,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=5">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js?v=2"></script>
 </head>

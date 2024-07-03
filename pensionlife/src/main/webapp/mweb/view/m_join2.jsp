@@ -8,7 +8,12 @@
     	request.setCharacterEncoding("utf-8");
 	    HttpSession se = request.getSession();
 		String user_id = (String)se.getAttribute("user_id");
+		String user_name = (String)se.getAttribute("user_name");
     
+		if(user_id != null){ // 로그인 상태로 접속 불가
+			out.print("<script>location.href = './m_index.jsp';</script>");
+		}
+		
     	boolean agree_ck = false;
     	//약관동의 정보
   
@@ -32,12 +37,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
-    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
+    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=5">
  
     <script src="../js/jquery.js"></script>
         <script src="../js/m_index.js"></script>
-    <script src="../js/m_join.js?v=1"></script>
+    <script src="../js/m_join.js?v=2"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -51,13 +56,18 @@
 
 <section class="subpage">
 <form id="frm">
+	<input type="hidden" id="check_id" value="">
     <div class="member_agree">
     <p>회원 기본 정보입력</p>
     <ol class="join_ol">
-    <li><input type="text" class="join_input1" name="u_info" placeholder="아이디 (영문/숫자 6~16자리)" maxlength="16"></li>
+    <li class="parent">
+    <input type="text" id="id_spot" class="join_input1" name="u_info" placeholder="아이디 (영문/숫자 6~16자리)" maxlength="16"><span id="usable_id">사용가능한아이디입니다.</span>
+    <span id="hidden_spot_id"></span>
+    <input type="button" id="btn_ckId" value="아이디 중복검사">	
+    </li>
     <li><input type="text" class="join_input1" name="u_info" placeholder="이름 (홍길동)" maxlength="10"></li>
     <li><input type="password" class="join_input1 ck_pw" id="pw" name="u_info" placeholder="비밀번호 (영문/숫자 6~12자리)" maxlength="12"></li>
-    <li id="parent"><input type="password" class="join_input1 ck_pw" id="ck_pw" placeholder="동일한 패스워드를 입력하세요" maxlength="12"><span id="wrong_pw">비밀번호가 틀립니다.</span></li>
+    <li class="parent"><input type="password" class="join_input1 ck_pw" id="ck_pw" placeholder="동일한 패스워드를 입력하세요" maxlength="12"><span id="wrong_pw">비밀번호가 틀립니다.</span></li>
     <li><input type="email" class="join_input1" name="u_info" placeholder="이메일을 입력하세요" maxlength="35"></li>
     <li><input type="tel" class="join_input1" name="u_info" placeholder="연락처 ('-'는 미입력)" maxlength="11"></li>
     <li class="security">

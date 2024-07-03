@@ -92,6 +92,7 @@ input,select,textarea { outline: none; }
 	align-items: center;
 }
 .join_input1 {
+	vertical-align : top;
 	width:98%;
 	border:1px solid skyblue;
 	height:30px;
@@ -106,17 +107,41 @@ input,select,textarea { outline: none; }
 	border-radius: 2px;
 	text-indent: 5px;
 }
-#parent {
+#id_spot{
+	width:70%;
+}
+#hidden_spot_id{
+	display : inline-block;
+	width : 3%;
+	height : 30px;
+}
+#btn_ckId{
+	vertical-align : top;
+	width : 25%;
+	height : 30px;
+}
+.parent {
 	position : relative;
 }
 #wrong_pw {
 	color : red;
+	font-weight : bold;
 	font-size : 10px;
 	position : absolute;
 	right : 15px;
 	top : 7px;
 	display : none;
 }
+#usable_id{
+	color : blue;
+	font-weight : bold;
+	font-size : 10px;
+	position : absolute;
+	right : 140px;
+	top : 7px;
+	display : none;
+}
+
 .bgcolor {
 	background-color: #eee;
 }

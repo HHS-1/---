@@ -35,16 +35,7 @@ public class sign_up extends HttpServlet {
         try {
         	this.pw = response.getWriter();
             this.con = this.db.getdbconfig();
-            String sql1 = "SELECT * FROM user_info WHERE user_id=?";
-            this.ps = this.con.prepareStatement(sql1);
-            this.ps.setString(1, userInfo[0]);
-            rs = this.ps.executeQuery();
-            if(rs.next() == true) {
-            	this.pw.append("<script>"
-            			+ "alert('아이디가 중복됩니다.');"
-            			+ "history.go(-1);"
-            			+ "</script>");
-            }else {
+           
             	String sql2 = "insert into user_info values('0',?,?,?,?,?,?,?,?,?,?,now())";
             	this.ps = this.con.prepareStatement(sql2);
             	
@@ -64,7 +55,7 @@ public class sign_up extends HttpServlet {
                 			+ "history.go(-1);"
                 			+ "</script>");
             	}
-            }
+            
           
             
         } catch (Exception e) {

@@ -7,6 +7,8 @@
 <%
 	HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
+	String user_name = (String)se.getAttribute("user_name");
+	
 	dbconfig db = new dbconfig();
 	Connection dbcon = db.getdbconfig();
 

@@ -79,6 +79,8 @@ header {
     width: 40%;
 }
 .top_menu > li:nth-of-type(3){
+ 	justify-content : right;
+ 	padding-right : 8px;
     width: 30%;
 }
 #hidden_space{

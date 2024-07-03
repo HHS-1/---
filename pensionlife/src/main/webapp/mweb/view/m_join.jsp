@@ -3,6 +3,11 @@
     <%
     HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
+	String user_name = (String)se.getAttribute("user_name");
+	
+	if(user_id != null){ // 로그인 상태로 접속 불가
+		out.print("<script>location.href = './m_index.jsp';</script>");
+	}
     %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,7 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
     <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=1">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js?v=1"></script>

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 	<display-name>pensionlife</display-name>
+	
+	<servlet>
+	<servlet-name>check_id</servlet-name>
+	<servlet-class>sign.check_id</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>check_id</servlet-name>
+	<url-pattern>/mweb/view/check_id.do</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 	<servlet-name>sign_up</servlet-name>
 	<servlet-class>sign.sign_up</servlet-class>

@@ -66,7 +66,8 @@ function regist_agree(){
 		 var ck_marketing = document.createElement("input");
          ck_marketing.type = "hidden";
          ck_marketing.name = "ck";
-         ck_marketing.value = "N";	
+         ck_marketing.value = "N";
+		 document.getElementById("frm").appendChild(ck_marketing); 	
 	}
 	
 	var token = document.getElementById("token").value = 123;
@@ -92,6 +93,30 @@ function reservation(c){
 }
 
 $(()=>{
+	//아이디 중복검사
+	$("#btn_ckId").click(()=>{
+		const user_id = document.querySelector("#id_spot").value;
+		const check_id = document.querySelector("#check_id"); 
+		$.ajax({
+			type : "post",
+			url : "./check_id.do",
+			data : {
+				user_id : user_id,
+			},
+			success : function(success){
+				if(success == "true"){
+					check_id.value = "true";
+					$("#usable_id").css("display","block");
+					alert('사용 가능한 아이디입니다.');
+				}
+			},
+			error : ((error)=>{
+				alert('아이디가 중복됩니다.');
+			}),
+		});
+		
+	})
+	
 	//로그아웃
 	$("#logout").click(()=>{
 		
