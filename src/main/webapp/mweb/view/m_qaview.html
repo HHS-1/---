@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호텔 & 펜션 예약시스템</title>
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
+    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=2">
+    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=2">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/m_index.js"></script>
+</head>
+<body>
+    <div class="menus_bar" id="menus_bar">
+        <div class="load_menus" id="load_menus">
+            <ul>
+                <li>팬션 예약확인</li>
+                <li>팬션 예약취소</li>
+                <li>1:1문의 게시판</li>
+            </ul>
+        </div>
+    </div>    
+<!-- 상단 시작 -->
+<header>
+<ul class="top_menu">
+    <li id="menu_slide"><img src="../img/menu.svg"></li>
+    <li><img src="../img/header_logo.png"></li>
+    <li onclick="login_pop();"><img src="../img/login.svg"></li>
+</ul>
+</header>
+<aside class="popup" id="popup" style="display:none;">
+	<div class="login">
+		<span class="close" onclick="pop_close();">X</span>
+		<p>MEMBER-LOGIN</p>
+		<ol>
+		<li><input type="text" class="login_input" placeholder="아이디를 입력하세요"></li>
+		<li><input type="password" class="login_input" placeholder="패스워드를 입력하세요"></li>
+		<li><label><input type="checkbox" class="login_check"> 자동로그인</label></li>
+		<li><input type="submit" value="로그인" class="login_btn"></li>
+		<li class="login_info">
+		<span onclick="page_location(1)">아이디 찾기</span>
+		<span onclick="page_location(2)">회원가입</span>
+		</li>
+		</ol>
+	</div>
+</aside>
+<!-- 상단 끝 -->
+<main>
+<!-- 배너 -->
+<section>
+    <img src="../img/title_Resort.jpg">
+</section>
+<!-- 배너 끝-->
+<!-- 중단 -->
+<section class="subpage">
+    <div class="member_agree">
+        <p>1:1 문의게시판(내용확인)</p>
+        <span class="sub_titles">빠르게 궁금한 사항을 답변 드리도록 하겠습니다.</span>
+        <ul class="write_ul">
+            <li class="cate_txt">질문항목 : 환불 및 요금</li>
+            <li><input type="text" class="w_input1 w_bg" value="홍길동" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" value="01012345678" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" value="hong@nate.com" readonly></li>
+            <li><input type="text" class="w_input1" placeholder="질문 제목" readonly></li>
+            <li><textarea class="w_input2" placeholder="질문 내용" readonly></textarea></li>
+            <li class="fileview">첨부파일 : 2024070103.jpg </li>
+            <li class="fileview">첨부파일 : 2024070112.jpg </li>
+        </ul>
+        <!--관리자 답변사항-->
+        <span class="admin_view" style="display: block;">관리자 답변내용</span>
+        <ul class="answer_admin" style="display: block;">
+            <li>질문하신 내용을 확인 하였습니다. <br>
+                해당 당일건에 대해서는 100% 환불은 어렵습니다.<br>
+                단, 최소 50%까지 환불은 진행이 가능하므로, 양해 부탁 드립니다.<br>
+                감사합니다.
+            </li>
+        </ul>
+        <!--수정하기 사항-->
+        <div class="member_agreebtn">수정하기</div>
+        <!--관리자 답변사항-->
+        <div class="member_agreebtn">문의 리스트</div>
+    </div>  
+</section>
+<!-- 하단 시작 -->
+<section>
+    <div class="container">
+        <ul>
+            <li>회사소개</li>
+            <li>제휴문의</li>
+            <li>광고문의</li>
+            <li>FAQ</li>
+            <li>개인정보취급방침</li>
+            <li>이용약관</li>
+            <li>예약관리시스템</li>
+        </ul>
+    </div>
+</section>
+</main>
+<footer>
+    <ul>
+    <li><img src="../img/footer_logo.png"></li>
+    <li>상호명 : (주)플레이스엠 |  대표이사 : 송재철</li>
+    <li>사업자등록번호 : 120-86-43350[사업자등록번호 확인]</li>
+    <li>통신판매신고번호 : 제2012-서울강남 00160호</li>
+    <li>주소 : 서울 강남구 테헤란로 79길 6,5층(삼성동,제이에스타워)</li>
+    <li>펜션 고객센터 : 1544-7317</li>
+    <li>개인정보담당자 : </li>
+    <li>Copyright (c) 2024 PLACEM CO.LTD. All Rights Reserved</li>
+    </ul>
+</footer>
+</body>
+</html>
