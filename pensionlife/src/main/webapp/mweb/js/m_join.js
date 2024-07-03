@@ -53,7 +53,7 @@ $(()=>{
 	$("#id_spot").on("input", ()=>{
 		const check_id = document.querySelector("#check_id");
 		check_id.value = "false";
-		$("#usable_id").css("display","none");
+		$("#usable_id").text("");
 	})
 	
 	//아이디 중복검사
@@ -69,12 +69,14 @@ $(()=>{
 			success : function(success){
 				if(success == "true"){
 					check_id.value = "true";
-					$("#usable_id").css("display","block");
-					alert('사용 가능한 아이디입니다.');
+					$("#usable_id").css("color","blue");
+					$("#usable_id").text("사용 가능한 아이디입니다.");
+					
 				}
 			},
 			error : ((error)=>{
-				alert('아이디가 중복됩니다.');
+				$("#usable_id").css("color","red");
+				$("#usable_id").text('아이디가 중복됩니다.');
 			}),
 		});
 		

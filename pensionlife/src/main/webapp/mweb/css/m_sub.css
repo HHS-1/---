@@ -139,7 +139,6 @@ input,select,textarea { outline: none; }
 	position : absolute;
 	right : 140px;
 	top : 7px;
-	display : none;
 }
 
 .bgcolor {

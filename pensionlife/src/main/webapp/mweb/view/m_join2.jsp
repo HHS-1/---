@@ -37,12 +37,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
-    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=5">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=6">
  
     <script src="../js/jquery.js"></script>
         <script src="../js/m_index.js"></script>
-    <script src="../js/m_join.js?v=2"></script>
+    <script src="../js/m_join.js?v=4"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -61,7 +61,7 @@
     <p>회원 기본 정보입력</p>
     <ol class="join_ol">
     <li class="parent">
-    <input type="text" id="id_spot" class="join_input1" name="u_info" placeholder="아이디 (영문/숫자 6~16자리)" maxlength="16"><span id="usable_id">사용가능한아이디입니다.</span>
+    <input type="text" id="id_spot" class="join_input1" name="u_info" placeholder="아이디 (영문/숫자 6~16자리)" maxlength="16"><span id="usable_id"></span>
     <span id="hidden_spot_id"></span>
     <input type="button" id="btn_ckId" value="아이디 중복검사">	
     </li>
