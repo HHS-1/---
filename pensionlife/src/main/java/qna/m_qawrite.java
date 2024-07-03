@@ -45,32 +45,47 @@ public class m_qawrite extends HttpServlet {
 		String file1_del = request.getParameter("file1_del");
 		String file2_del = request.getParameter("file2_del");
 		//Ajax사용 jsp에서 받아오는 변수
-		String modfile1 = request.getParameter("qfile1_val");
-		String modfile2 = request.getParameter("qfile2_val");
+		String qfile1_val = request.getParameter("qfile1_val");
+		String qfile2_val = request.getParameter("qfile2_val");
 		
 		InetAddress localHost = InetAddress.getLocalHost();
         String localIPAddress = localHost.getHostAddress();
 		String filedburl = "http://"+localIPAddress+":8080/upload/";
 		String fileSaveUrl = request.getServletContext().getRealPath("/upload/");
 		
+		System.out.println(fileSaveUrl);
 		//폴더가 없다면 생성
 		File folder = new File(fileSaveUrl);
 		if (!folder.exists()) {
 			folder.mkdirs();
 	    }
 		
+		if(qfile1_val == null) {
+			qfile1_val = "";
+		}
+		if(qfile2_val == null) {
+			qfile2_val = "";
+		}
+		System.out.println(qfile1_val);
+		System.out.println(qfile2_val);
 		//Ajax사용 할 때 쓰이는 코드 <--
-		if(modfile1 == null || file1_del.equals("Y")) {
-			modfile1 = "";
+		if(qfile1_val.equals("")) {
+			if(!qfile2_val.equals("")) {
+				qfile1_val = "";
+				qfile2_val = filedburl+qfile2_val;
+			}else {
+				qfile1_val = "";
+				qfile2_val = "";
+			}
 		}else {
-			modfile1 = filedburl+modfile1;
+			if(qfile2_val.equals("")) {
+				qfile1_val = filedburl+qfile1_val;
+				qfile2_val = ","+filedburl+qfile2_val;
+			}else {
+				qfile1_val = filedburl+qfile1_val;
+			}
 		}
-		if(modfile2 == null || file2_del.equals("Y")) {
-			modfile2 = "";
-		}else {
-			modfile2 = ","+filedburl+modfile2;
-		}
-		String qfile = modfile1+modfile2;
+		String qfile = qfile1_val+qfile2_val;
 		// -->
 		
 		if(qfile1.getSize()>0) {
@@ -97,7 +112,8 @@ public class m_qawrite extends HttpServlet {
 				rename rn2 = new rename(fileName2);
 				String refilename2 = rn2.filenm;
 				qfile2.write(fileSaveUrl+refilename2);
-				if(qfile == "") {
+				System.out.println(qfile);
+				if(qfile.equals("")) {
 					qfile = filedburl + refilename2;
 				}else {
 					qfile += "," + filedburl + refilename2;

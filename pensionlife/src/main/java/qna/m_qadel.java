@@ -53,16 +53,17 @@ public class m_qadel extends HttpServlet {
 					dbqfile2 = qfile.substring(i+1);
 					
 					
-					
+					System.out.println("del1:"+ modfile1);
+					System.out.println("del2:"+ modfile2);
 					int id1 = dbqfile1.lastIndexOf("/");
 					int id2 = dbqfile2.lastIndexOf("/");
 					String filenm1 = dbqfile1.substring(id1+1);
 					String filenm2 = dbqfile2.substring(id2+1);
-					if(modfile1 != null) {
+					if(modfile1 == null || modfile1.equals("")) {
 					File fe1 = new File(url+filenm1); 
 					fe1.delete();
 					}
-					if(modfile2 != null) {
+					if(modfile2 == null || modfile2.equals("")) {
 					File fe2 = new File(url+filenm2); 
 					fe2.delete();
 					}
@@ -71,9 +72,10 @@ public class m_qadel extends HttpServlet {
 				else {
 					int id = qfile.lastIndexOf("/");
 					String filenm = qfile.substring(id+1);
-					
-					File fe = new File(url+filenm); 
-					fe.delete();
+					if(modfile1 == null) {
+						File fe = new File(url+filenm); 
+						fe.delete();
+					}
 				}
 			}
 			//DB삭제
