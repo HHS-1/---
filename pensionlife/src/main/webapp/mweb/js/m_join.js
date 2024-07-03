@@ -1,3 +1,52 @@
+/* 회원가입 */
+//전체 선택
+function all_check(){
+	var ck_all = document.getElementById("ck_all");
+	for(var f = 1 ; f <= 5 ; f++){
+		document.getElementById("ck" + f).checked = ck_all.checked;
+	}
+}
+
+//개별 체크에 따른 전체체크 활성화/비활성화
+function check(){
+	var ck = true;
+	var ck_all = document.getElementById("ck_all");
+	for(var f = 1 ; f <= 5 ; f++){
+		if(document.getElementById("ck" + f).checked == false){
+			ck_all.checked = false;
+			ck = false;
+			break;
+		}
+	}
+	if(ck == true){
+		ck_all.checked = true;
+	}
+}
+
+// 회원가입 약관동의 완료(회원 가입 페이지로 이동)
+function regist_agree(){
+	for(var f = 1 ; f <= 4 ; f++){
+		var ck_btn = document.getElementById("ck" + f);
+		if(ck_btn.checked == false && f != 5){
+			alert("필수 동의 사항을 체크해주세요");
+			return false;		
+		}
+	}
+
+	if(!document.getElementById("ck5").checked){
+		 var ck_marketing = document.createElement("input");
+         ck_marketing.type = "hidden";
+         ck_marketing.name = "ck";
+         ck_marketing.value = "N";
+		 document.getElementById("frm").appendChild(ck_marketing); 	
+	}
+	
+	var token = document.getElementById("token").value = 123;
+	frm.method = "post";
+	frm.action = "./m_join2.jsp?token=" + token;
+	frm.submit();
+}
+
 
 $(()=>{
 	
@@ -5,6 +54,30 @@ $(()=>{
 		const check_id = document.querySelector("#check_id");
 		check_id.value = "false";
 		$("#usable_id").css("display","none");
+	})
+	
+	//아이디 중복검사
+	$("#btn_ckId").click(()=>{
+		const user_id = document.querySelector("#id_spot").value;
+		const check_id = document.querySelector("#check_id"); 
+		$.ajax({
+			type : "post",
+			url : "./check_id.do",
+			data : {
+				user_id : user_id,
+			},
+			success : function(success){
+				if(success == "true"){
+					check_id.value = "true";
+					$("#usable_id").css("display","block");
+					alert('사용 가능한 아이디입니다.');
+				}
+			},
+			error : ((error)=>{
+				alert('아이디가 중복됩니다.');
+			}),
+		});
+		
 	})
 	
 	var $ck_pw = false;

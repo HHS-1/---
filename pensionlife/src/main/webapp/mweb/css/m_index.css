@@ -264,6 +264,17 @@ footer > ul > li{
 .login_info > span{
 	cursor: pointer;
 }
+.parent {
+	position : relative;
+}
+#login_fail_msg{
+	position : absolute;
+	bottom : 0;
+	margin-left : 55px;
+	color: red;
+	font-weight:bold;
+	display : none;
+}
 .id_searchview { 
     width: 100%;
     height: 30px;

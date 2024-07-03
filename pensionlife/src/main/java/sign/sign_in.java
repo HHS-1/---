@@ -31,13 +31,13 @@ public class sign_in extends HttpServlet {
 		 	request.setCharacterEncoding("utf-8");
 	     	response.setContentType("text/html; charset=utf-8");
 	        
-	        String[] login_info = request.getParameterValues("login_info");
+	        //String[] login_info = request.getParameterValues("login_info");
+	     	String user_id = request.getParameter("user_id");
+	     	String user_pw = request.getParameter("user_pw");
 	        String login_auto = request.getParameter("login_auto");
-	        String user_id = request.getParameter("user_id");
+	        System.out.println(user_id);
 	        HttpSession se = request.getSession();
 	        se.setAttribute("login_check", true);
-	        System.out.println(Arrays.toString(login_info));
-	        System.out.println(user_id);
 	        
 	        try {
 	        	this.pw = response.getWriter();
@@ -46,52 +46,23 @@ public class sign_in extends HttpServlet {
 	            //일반 로그인
 	            String sql1 = "SELECT * FROM user_info WHERE user_id=?";
 	            this.ps = this.con.prepareStatement(sql1);
-	            this.ps.setString(1, login_info[0]);
+	            this.ps.setString(1, user_id);
 	            this.rs = this.ps.executeQuery();
 	            rs.next();
 	            
-	            if(user_id == null && login_info[1].equals(rs.getString("user_pw"))) {
-	            	
+	            if(user_pw.equals(rs.getString("user_pw"))) {
 	            	
 	            	se.setAttribute("user_id", rs.getString("user_id"));
 	            	se.setAttribute("user_name", rs.getString("user_name"));
 	            	se.setAttribute("login_auto", login_auto);
 	            	
-	            	this.pw.write("<script>"
-	            			+ "alert('로그인 성공');"
-	            			+ "location.href='./m_index.jsp';"
-	            			+ "</script>");
+	            	this.pw.write("true");
 	            }else {
-	            	this.pw.write("<script>"
-	            			+ "alert('로그인 실패');"
-	            			+ "history.go(-1);"
-	            			+ "</script>");
+	            	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	            }
 	          
-	            //자동 로그인
-	            if(user_id != null) {
-	            	System.out.println("자동로그인 시도");
-	            	String sql2 = "SELECT * FROM user_info WHERE user_id=?";
-		            this.ps = this.con.prepareStatement(sql2);
-		            this.ps.setString(1, user_id);
-		            this.rs = this.ps.executeQuery();
-		            rs.next();
-		            if(rs.getString("user_id") != null) {
-		            	se.setAttribute("user_id", rs.getString("user_id"));
-		            	se.setAttribute("user_name", rs.getString("user_name"));
-		            	se.setAttribute("login_auto", login_auto);
-		            	
-		            	this.pw.write("<script>"
-		            			+ "alert('자동 로그인 성공');"
-		            			+ "location.href='./m_index.jsp';"
-		            			+ "</script>");
-		            }
-	            }
 	        }catch(Exception e) {
-	        	this.pw.write("<script>"
-            			+ "alert('등록된 아이디가 없습니다.');"
-            			+ "history.go(-1);"
-            			+ "</script>");
+	        	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	        }finally {
 	        	try {
 	        		this.pw.close();

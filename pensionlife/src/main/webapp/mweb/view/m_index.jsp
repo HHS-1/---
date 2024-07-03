@@ -70,7 +70,7 @@
 	
 	window.addEventListener('load', set_localStorage);
 	if(<%=login_check%> == false){
-		console.log("test")
+		console.log("자동로그인")
 		window.addEventListener('load', login_auto);
 	}
 	

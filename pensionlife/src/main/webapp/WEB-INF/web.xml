@@ -30,6 +30,24 @@
 	</servlet-mapping>
 	
 	<servlet>
+	<servlet-name>admin_login</servlet-name>
+	<servlet-class>sign.admin_login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>admin_login</servlet-name>
+	<url-pattern>/mweb/view/admin_login.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>admin_logout</servlet-name>
+	<servlet-class>sign.admin_logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>admin_logout</servlet-name>
+	<url-pattern>/mweb/view/admin_logout.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	<servlet-name>sign_in_auto</servlet-name>
 	<servlet-class>sign.sign_in_auto</servlet-class>
 	</servlet>

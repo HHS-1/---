@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
     <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=1">
     <script src="../js/jquery.js"></script>
+        <script src="../js/m_join.js"></script>
     <script src="../js/m_index.js?v=1"></script>
 
 </head>

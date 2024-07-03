@@ -24,17 +24,20 @@
     <%} %>
 </ul>
 </header>
-<form id="frm_login" onsubmit="login()">
+<form id="frm_login">
 <aside class="popup" id="popup" style="display:none;">
 
 	<div class="login">
 		<span class="close" onclick="pop_close();">X</span>
 		<p>MEMBER-LOGIN</p>
 		<ol>
-		<li><input type="text" class="login_input" name="login_info" placeholder="아이디를 입력하세요"></li>
-		<li><input type="password" class="login_input" name="login_info" placeholder="패스워드를 입력하세요"></li>
-		<li><label><input type="checkbox" id="login_auto" name="login_auto" class="login_check" value="Y"> 자동로그인</label></li>
-		<li><input type="submit" value="로그인" class="login_btn"></li>
+		<li><input type="text" class="login_input" id="user_id" name="login_info" placeholder="아이디를 입력하세요"></li>
+		<li><input type="password" class="login_input" id="user_pw" name="login_info" placeholder="패스워드를 입력하세요"></li>
+		<li class="parent">
+		<label><input type="checkbox" id="login_auto" name="login_auto" class="login_check" value="Y"> 로그인 상태 유지</label><br>
+		<span id="login_fail_msg">아이디 또는 비밀번호를 확인해주세요.</span>
+		</li>
+		<li style="padding-top:10px"><input type="submit" value="로그인" class="login_btn"></li>
 		<li class="login_info">
 		<span onclick="location.href='./m_idsearch.jsp'">아이디 찾기</span>
 		<span onclick="location.href='./m_join.jsp'">회원가입</span>
@@ -43,23 +46,3 @@
 	</div>
 </aside>
 </form>
-<script>
-//로그인
-function login(){
-	if(document.querySelector("#login_auto").checked == true){
-		if(confirm("피시방 등 공공장소에서는 자동로그인 사용을 권장하지 않습니다.\n취소를 클릭 시 자동로그인이 해제되어 로그인됩니다.")){
-			frm_login.method = "post";
-			frm_login.action = "./sign_in.do";
-		}else{
-			document.querySelector("#login_auto").value = null;
-			frm_login.method = "post";
-			frm_login.action = "./sign_in.do";
-		}	
-	}else{
-		frm_login.method = "post";
-		frm_login.action = "./sign_in.do";
-	}
-	
-}
-
-</script>

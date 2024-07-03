@@ -1,5 +1,4 @@
 
-
 //로그인 팝업
 function login_pop(){
 	var pop = document.getElementById("popup");
@@ -28,55 +27,6 @@ function page_location(n){
 	location.href = url;
 }
 
-//전체 선택
-function all_check(){
-	var ck_all = document.getElementById("ck_all");
-	for(var f = 1 ; f <= 5 ; f++){
-		document.getElementById("ck" + f).checked = ck_all.checked;
-	}
-}
-
-//개별 체크에 따른 전체체크 활성화/비활성화
-function check(){
-	var ck = true;
-	var ck_all = document.getElementById("ck_all");
-	for(var f = 1 ; f <= 5 ; f++){
-		if(document.getElementById("ck" + f).checked == false){
-			ck_all.checked = false;
-			ck = false;
-			break;
-		}
-	}
-	if(ck == true){
-		ck_all.checked = true;
-	}
-}
-
-// 회원가입 약관동의 완료(회원 가입 페이지로 이동)
-function regist_agree(){
-	for(var f = 1 ; f <= 4 ; f++){
-		var ck_btn = document.getElementById("ck" + f);
-		if(ck_btn.checked == false && f != 5){
-			alert("필수 동의 사항을 체크해주세요");
-			return false;		
-		}
-	}
-
-	if(!document.getElementById("ck5").checked){
-		 var ck_marketing = document.createElement("input");
-         ck_marketing.type = "hidden";
-         ck_marketing.name = "ck";
-         ck_marketing.value = "N";
-		 document.getElementById("frm").appendChild(ck_marketing); 	
-	}
-	
-	var token = document.getElementById("token").value = 123;
-	frm.method = "post";
-	frm.action = "./m_join2.jsp?token=" + token;
-	frm.submit();
-}
-
-
 
 //middle 펜션 리스트 클릭시 예약 페이지로 이동
 function reservation(c){
@@ -92,30 +42,45 @@ function reservation(c){
 			frm.submit();
 }
 
-$(()=>{
-	//아이디 중복검사
-	$("#btn_ckId").click(()=>{
-		const user_id = document.querySelector("#id_spot").value;
-		const check_id = document.querySelector("#check_id"); 
+$(()=>{ //로그인,로그아웃
+
+	//로그인
+	$("#frm_login").submit((event)=>{
+		event.preventDefault();
+		const user_id = document.querySelector("#user_id").value;
+		const user_pw = document.querySelector("#user_pw").value;
+		const login_auto = document.querySelector("#login_auto").value;
+
+		if(document.querySelector("#login_auto").checked == true){
+			if(!confirm("피시방 등 공공장소에서는 자동로그인 사용을 권장하지 않습니다.\n취소를 클릭 시 자동로그인이 해제되어 로그인됩니다.")){
+				document.querySelector("#login_auto").value = null;
+			}	
+		}
+
 		$.ajax({
 			type : "post",
-			url : "./check_id.do",
+			url : "./sign_in.do",
 			data : {
 				user_id : user_id,
+				user_pw : user_pw,
+				login_auto : login_auto,
 			},
 			success : function(success){
-				if(success == "true"){
-					check_id.value = "true";
-					$("#usable_id").css("display","block");
-					alert('사용 가능한 아이디입니다.');
+				console.log(success);
+				if(success=="true"){
+					alert('로그인 성공');
+	    			location.href='./m_index.jsp';
 				}
 			},
 			error : ((error)=>{
-				alert('아이디가 중복됩니다.');
+				console.log("실패");
+				$("#login_fail_msg").css("display","block");
 			}),
 		});
-		
 	})
+	
+	
+
 	
 	//로그아웃
 	$("#logout").click(()=>{
