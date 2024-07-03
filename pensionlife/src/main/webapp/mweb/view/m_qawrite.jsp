@@ -5,10 +5,19 @@
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="model.dbconfig" %>
     <%
     HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
 	String user_name = (String)se.getAttribute("user_name");
+	
+	dbconfig db = new dbconfig();
+	Connection con = db.getdbconfig();
+	String sql = "select * from user_info where user_id=?";
+	PreparedStatement pst = con.prepareStatement(sql);
+	pst.setString(1, user_id);
+	ResultSet rs = pst.executeQuery();
+	rs.next();
     %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -47,9 +56,9 @@
             <li data-value="기타문의">기타문의</li>
         </ol>
         <ul class="write_ul">
-            <li><input type="text" class="w_input1 w_bg" name="qname" value="홍길동" readonly></li>
-            <li><input type="text" class="w_input1 w_bg" name="qtel" value="01012345678" readonly></li>
-            <li><input type="text" class="w_input1 w_bg" name="qemail" value="hong@nate.com" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" name="user_name" value="<%=rs.getString("user_name") %>" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" name="user_tel" value="<%=rs.getString("user_tel") %>" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" name="user_email" value="<%=rs.getString("user_email") %>" readonly></li>
             <li><input type="text" class="w_input1" id="qtitle" name="qtitle" placeholder="질문 제목"></li>
             <li><textarea class="w_input2" id="qtext" name="qtext" placeholder="질문 내용"></textarea></li>
             <li><input type="file" id="qfile1" name="qfile1" class="w_li"> * 최대 2MB까지 가능</li>

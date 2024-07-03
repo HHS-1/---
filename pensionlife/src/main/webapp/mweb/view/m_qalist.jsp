@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="model.dbconfig" %>
+
 <%
 	HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
@@ -25,18 +26,20 @@
 	int list = 5;
 	
 	//DB데이터 역순으로 5개씩 가져옴
-	String sql = "select * from qa_board order by qidx desc limit ?,?";
+	String sql = "select * from qa_board where user_id=? order by qidx desc limit ?,?";
 	PreparedStatement pst = dbcon.prepareStatement(sql);
-	pst.setInt(1, pages);
-	pst.setInt(2, list);
+	pst.setString(1, user_id);
+	pst.setInt(2, pages);
+	pst.setInt(3, list);
 	ResultSet rs = pst.executeQuery();
 	
 	//DB qa_board 데이터개수 파악
-	String sql2 = "select count(*) as ctn from qa_board";
+	String sql2 = "select count(*) as ctn from qa_board where user_id=?";
 	pst = dbcon.prepareStatement(sql2);
+	pst.setString(1, user_id);
 	ResultSet rs2 = pst.executeQuery();
 	rs2.next();
-	
+	int ctn = rs2.getInt("ctn");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -70,6 +73,11 @@
             <li>등록일</li>
             <li>처리</li>
         </ul>
+        <%if(ctn<=0){ %>
+        <ul class="qa_lists2">
+        	<li>문의하신 내용이 없습니다.</li>
+       	</ul>
+       	<%}else{ %>
         <%
         while(rs.next()){
         %>
@@ -86,11 +94,16 @@
             </li>
             <li><%=rs.getString("user_name") %></li>
             <li><%=rs.getDate("qdate") %></li>
+            <%if(rs.getString("qhandle").equals("답변완료")){ %>
+            <li><a style="color: red;"><%=rs.getString("qhandle") %></a></li>
+            <%}else{ %>
             <li><%=rs.getString("qhandle") %></li>
+            <%} %>
         </ul>
-        <%
+	    <%
+        	}
         }
-        %>
+	    %>
         <table border="1" cellpadding="0" cellspacing="0">
 			<tr>
 				<% 

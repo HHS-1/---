@@ -102,5 +102,51 @@
     .qa_lists2 > li:nth-of-type(1){
         text-align: left;
     }
-
+    .cate_txt {
+        font-size: 14px;
+        font-weight: bolder;
+        color: red;
+        text-align: left !important;
+        text-indent: 3px;
+    }
+    .fileview {
+        font-size: 14px;
+        text-align: left !important;
+        text-indent: 3px;
+        font-weight: 400;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .btn_del {
+        width: 50px;
+        height: 30px;
+        background-color: black;
+        color: white;
+        display: block;
+        text-align: center;
+        line-height: 30px;
+        margin-left: 5px;
+    }
+    .admin_view {
+        border-top:1px dashed #ccc;
+        width: 100%;
+        height: 40px;
+        font-size: 14px;
+        font-weight: 500;
+        color: darkblue;
+        line-height: 40px;
+    }
+    .answer_admin { 
+        width: 100%;
+        height: auto;
+        border: 1px solid skyblue;
+        border-radius: 5px;
+    }
+    .answer_admin > li {
+        overflow: hidden;
+        overflow-y: auto;
+        width: 100%;
+        height: 50px;
+    }
 }

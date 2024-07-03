@@ -32,6 +32,8 @@ public class m_qamod extends HttpServlet {
 		HttpSession se = request.getSession();
 		String file1_del = request.getParameter("file1_del");
 		String file2_del = request.getParameter("file2_del");
+		String qfile1_val = request.getParameter("qfile1_val");
+		String qfile2_val = request.getParameter("qfile2_val");
 		String qidx = request.getParameter("qidx");		
 		String qtitle = request.getParameter("qtitle");
 		String qtext = request.getParameter("qtext");
@@ -43,6 +45,12 @@ public class m_qamod extends HttpServlet {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		
+		if(qfile1.getContentType().contains("image") || qfile2.getContentType().contains("image")) {
+			response.getWriter().write("<script>"
+					+ "alert('이미지 파일만 업로드가 가능합니다.');"
+					+ "history.go(-1)';"
+					+ "</script>");
+		}
 		
 		try {
 			con = db.getdbconfig();
@@ -130,9 +138,15 @@ public class m_qamod extends HttpServlet {
 					qfile = filedburl + refilename2;
 				}
 			}
+			//기존 첨부파일이 2개가 있고 새로운 첨부파일이 없는 경우
+			else {
+				if(file1_del.equals("Y")) {
+					qfile = dbfile.substring(dbfile.indexOf(",")+1);
+				}else if(file2_del.equals("Y")){
+					qfile = dbfile.substring(0,dbfile.indexOf(","));
+				}
+			}
 			
-			
-			System.out.println(qfile);
 			String sql2 = "update qa_board set qtitle=? , qtext=? , qfile=? where qidx=?";
 			pst = con.prepareStatement(sql2);
 			pst.setString(1, qtitle);

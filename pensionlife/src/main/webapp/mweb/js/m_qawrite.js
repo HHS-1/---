@@ -18,7 +18,7 @@ $(function(){
 			alert("문의 유형을 선택하셔야 합니다.");
 		}else if($("#qtitle").val() == ""){
 			alert("제목을 입력하지 않으셨습니다.");
-		}else if($("#qtitle").val() == ""){
+		}else if($("#qtext").val() == ""){
 			alert("내용을 입력하지 않으셨습니다.");
 		}else{
 			$("#frm").attr("method","post");

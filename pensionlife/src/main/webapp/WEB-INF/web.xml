@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 	<display-name>pensionlife</display-name>
-	
 	<servlet>
 	<servlet-name>check_id</servlet-name>
 	<servlet-class>sign.check_id</servlet-class>
@@ -27,24 +26,6 @@
 	<servlet-mapping>
 	<servlet-name>sign_in</servlet-name>
 	<url-pattern>/mweb/view/sign_in.do</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-	<servlet-name>admin_login</servlet-name>
-	<servlet-class>sign.admin_login</servlet-class>
-	</servlet>
-	<servlet-mapping>
-	<servlet-name>admin_login</servlet-name>
-	<url-pattern>/mweb/view/admin_login.do</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-	<servlet-name>admin_logout</servlet-name>
-	<servlet-class>sign.admin_logout</servlet-class>
-	</servlet>
-	<servlet-mapping>
-	<servlet-name>admin_logout</servlet-name>
-	<url-pattern>/mweb/view/admin_logout.do</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -84,6 +65,24 @@
 	</servlet-mapping>
 	
 	<servlet>
+	<servlet-name>admin_login</servlet-name>
+	<servlet-class>sign.admin_login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>admin_login</servlet-name>
+	<url-pattern>/mweb/view/admin_login.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>admin_logout</servlet-name>
+	<servlet-class>sign.admin_logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>admin_logout</servlet-name>
+	<url-pattern>/mweb/view/admin_logout.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	<servlet-name>reservation</servlet-name>
 	<servlet-class>reservation.room_info</servlet-class>
 	</servlet>
@@ -117,6 +116,15 @@
 	<servlet-mapping>
 	<servlet-name>m_qamod</servlet-name>
 	<url-pattern>/mweb/view/m_qamod.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>admin_qawrite</servlet-name>
+	<servlet-class>qna.admin_qawrite</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>admin_qawrite</servlet-name>
+	<url-pattern>/mweb/view/admin_qawrite.do</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

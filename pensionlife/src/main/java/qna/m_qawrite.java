@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import model.dbconfig;
@@ -27,43 +31,80 @@ public class m_qawrite extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
+		HttpSession se = request.getSession();
 		String qhead = request.getParameter("qhead");		
-		String user_id = request.getParameter("qname");
-		String user_name = request.getParameter("qname");
-		String user_tel = request.getParameter("qtel");
-		String user_email = request.getParameter("qemail");
+		String user_id = (String)se.getAttribute("user_id");
+		String user_name = request.getParameter("user_name");
+		String user_tel = request.getParameter("user_tel");
+		String user_email = request.getParameter("user_email");
 		String qtitle = request.getParameter("qtitle");
 		String qtext = request.getParameter("qtext");
 		Part qfile1 = request.getPart("qfile1"); 
 		Part qfile2 = request.getPart("qfile2");
-		String qfile = "";
+		String qdate = request.getParameter("qdate");
+		String file1_del = request.getParameter("file1_del");
+		String file2_del = request.getParameter("file2_del");
+		//Ajax사용 jsp에서 받아오는 변수
+		String modfile1 = request.getParameter("qfile1_val");
+		String modfile2 = request.getParameter("qfile2_val");
 		
 		InetAddress localHost = InetAddress.getLocalHost();
         String localIPAddress = localHost.getHostAddress();
 		String filedburl = "http://"+localIPAddress+":8080/upload/";
 		String fileSaveUrl = request.getServletContext().getRealPath("/upload/");
+		
+		//폴더가 없다면 생성
+		File folder = new File(fileSaveUrl);
+		if (!folder.exists()) {
+			folder.mkdirs();
+	    }
+		
+		//Ajax사용 할 때 쓰이는 코드 <--
+		if(modfile1 == null || file1_del.equals("Y")) {
+			modfile1 = "";
+		}else {
+			modfile1 = filedburl+modfile1;
+		}
+		if(modfile2 == null || file2_del.equals("Y")) {
+			modfile2 = "";
+		}else {
+			modfile2 = ","+filedburl+modfile2;
+		}
+		String qfile = modfile1+modfile2;
+		// -->
+		
 		if(qfile1.getSize()>0) {
-			String fileName = qfile1.getSubmittedFileName();
-			rename rn = new rename(fileName);
-			String refilename = rn.filenm;
-			qfile1.write(fileSaveUrl+refilename);
-			qfile = filedburl + refilename;
+			if(qfile1.getContentType().contains("image")) {
+				String fileName = qfile1.getSubmittedFileName();
+				rename rn = new rename(fileName);
+				String refilename = rn.filenm;
+				qfile1.write(fileSaveUrl+refilename);
+				qfile = filedburl + refilename;
+			}
 			
 			if(qfile2.getSize()>0) {
+				if(qfile2.getContentType().contains("image")) {
+					String fileName2 = qfile2.getSubmittedFileName();
+					rename rn2 = new rename(fileName2);
+					String refilename2 = rn2.filenm;
+					qfile2.write(fileSaveUrl+refilename2);
+					qfile += ","+filedburl + refilename2;
+				}
+			}
+		}else if(qfile2.getSize()>0) {
+			if(qfile2.getContentType().contains("image")) {
 				String fileName2 = qfile2.getSubmittedFileName();
 				rename rn2 = new rename(fileName2);
 				String refilename2 = rn2.filenm;
 				qfile2.write(fileSaveUrl+refilename2);
-				qfile += ","+filedburl + refilename2;
+				if(qfile == "") {
+					qfile = filedburl + refilename2;
+				}else {
+					qfile += "," + filedburl + refilename2;
+				}
 			}
-		}else if(qfile2.getSize()>0) {
-			String fileName2 = qfile2.getSubmittedFileName();
-			rename rn2 = new rename(fileName2);
-			String refilename2 = rn2.filenm;
-			qfile2.write(fileSaveUrl+refilename2);
-			qfile = filedburl + refilename2;
 		}
-
+		
 		
 		PreparedStatement pst = null;
 		Connection con = null;
@@ -72,7 +113,15 @@ public class m_qawrite extends HttpServlet {
 			dbconfig db = new dbconfig();
 			con = db.getdbconfig();
 			
-			String sql = "insert into qa_board values('0',?,?,?,?,?,?,?,?,'미답변',now())";
+			String sql = null;
+			if(qdate == null) {
+				qdate = "now()";
+				sql = "insert into qa_board values('0',?,?,?,?,?,?,?,?,'미답변','',"+qdate+")";
+			}else if(qdate.endsWith(".0")) {
+				qdate = qdate.substring(0, qdate.length() - 2);
+				sql = "insert into qa_board values('0',?,?,?,?,?,?,?,?,'미답변','','"+qdate+"')";
+			}
+			
 			pst = con.prepareStatement(sql);
 			pst.setString(1, qhead);
 			pst.setString(2, user_id);

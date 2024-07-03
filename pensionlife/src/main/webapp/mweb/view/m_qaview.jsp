@@ -39,11 +39,13 @@
 		
 		dbqfile1 = qfile.substring(0,i);
 		int li = dbqfile1.lastIndexOf("/");
-		qfile1 = dbqfile1.substring(li+1);
+		int li2 = dbqfile1.lastIndexOf("_");
+		qfile1 = dbqfile1.substring(li2+1);
 		
 		dbqfile2 = qfile.substring(i+1);
 		li = dbqfile2.lastIndexOf("/");
-		qfile2 = dbqfile2.substring(li+1);
+		li2 = dbqfile2.lastIndexOf("_");
+		qfile2 = dbqfile2.substring(li2+1);
 	}else{
 		int li = qfile.lastIndexOf("/");
 		int li2 = qfile.lastIndexOf("_");
@@ -59,14 +61,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 & 펜션 예약시스템</title>
-    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
-    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=3">
-    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=3">
+    <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=4">
+    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=4">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
-    <script src="../js/m_qaview.js?v=1"></script>
+    <script src="../js/m_qaview.js?v=3"></script>
 </head>
 <body>
+<form id="frm">
+<input type="hidden" name="qidx" value="<%=qidx%>">
     <div class="menus_bar" id="menus_bar">
         <div class="load_menus" id="load_menus">
             <ul>
@@ -85,15 +89,15 @@
 <!-- 배너 끝-->
 <!-- 중단 -->
 <section class="subpage">
-<form>
+
     <div class="member_agree">
         <p>1:1 문의게시판(내용확인)</p>
         <span class="sub_titles">빠르게 궁금한 사항을 답변 드리도록 하겠습니다.</span>
         <ul class="write_ul">
-            <li class="cate_txt">질문항목 : 환불 및 요금</li>
-            <li><input type="text" class="w_input1 w_bg" value="홍길동" readonly></li>
-            <li><input type="text" class="w_input1 w_bg" value="01012345678" readonly></li>
-            <li><input type="text" class="w_input1 w_bg" value="hong@nate.com" readonly></li>
+            <li class="cate_txt"><a style="color:red; font-size:15px">질문항목 : <%=rs.getString("qhead") %></a></li>
+            <li><input type="text" class="w_input1 w_bg" value="<%=rs.getString("user_name")%>" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" value="<%=rs.getString("user_tel")%>" readonly></li>
+            <li><input type="text" class="w_input1 w_bg" value="<%=rs.getString("user_email")%>" readonly></li>
             <li><input type="text" class="w_input1" value="<%=rs.getString("qtitle") %>" placeholder="질문 제목" readonly></li>
             <li><textarea class="w_input2" placeholder="질문 내용" readonly><%=rs.getString("qtext") %></textarea></li>
             <%
@@ -111,27 +115,29 @@
             %>
         </ul>
         <!--관리자 답변사항-->
-        <span class="admin_view" style="display: block;">관리자 답변내용</span>
-        <ul class="answer_admin" style="display: block;">
-            <li>질문하신 내용을 확인 하였습니다. <br>
-                해당 당일건에 대해서는 100% 환불은 어렵습니다.<br>
-                단, 최소 50%까지 환불은 진행이 가능하므로, 양해 부탁 드립니다.<br>
-                감사합니다.
-            </li>
-        </ul>
+        
         <!--관리자 답변사항-->
-        <div class="member_agreebtn">문의 리스트</div>
-        <input type="button" class="modify_btn" value="수정"><input type="button" class="delete_btn" value="삭제">
+        <%if(rs.getString("qhandle").equals("미답변")){ %>
+        <div class="member_agreebtn" id="modify_btn">문의수정</div>
+        <%}else{%>
+        <!-- <span class="admin_view" style="display: block;">관리자 답변내용</span><br>
+        <ul class="answer_admin" style="display: block;">
+            <li><%=rs.getString("qadmin") %></li>
+        </ul>  -->
+        <span class="admin_view" style="display: block;">관리자 답변내용</span>
+        <ul class="write_ul">
+        	<li><input type="text" class="w_input1" value="<%=rs.getString("qadmin") %>" readonly></li>
+        </ul>
+        <%} %>
+        <div class="member_agreebtn" id="member_agreebtn" style="background-color: darkblue; color:white;">문의 리스트</div>
     </div>  
-</form>
+
 </section>
-<form id="frm">
-<input type="hidden" name="qidx" value="<%=qidx%>">
-</form>
 <!-- 하단 시작 -->
 <%@ include file="../Qmenu.jsp" %>
 </main>
 <%@ include file="../copyright.jsp" %>
+</form>
 </body>
 </html>
 <%

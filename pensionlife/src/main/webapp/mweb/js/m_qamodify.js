@@ -1,12 +1,10 @@
 function filedel_btn(z){
 	if(z==1){
 		document.getElementById("file1_del").value = "Y";
-		document.getElementById("qfile1_val").value = "";
 		document.getElementById("qfileview1a").style.display = "block";
 		document.getElementById("qfileview1b").style.display = "none";
 	}else {
 		document.getElementById("file2_del").value = "Y";
-		document.getElementById("qfile2_val").value = "";
 		document.getElementById("qfileview2a").style.display = "block";
 		document.getElementById("qfileview2b").style.display = "none";
 	}

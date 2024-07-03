@@ -29,6 +29,10 @@ public class m_qadel extends HttpServlet {
 			con = db.getdbconfig();
 			
 			String qidx = request.getParameter("qidx");
+			//Ajax사용 jsp에서 받아오는 변수
+			String modfile1 = request.getParameter("modfile1");
+			String modfile2 = request.getParameter("modfile2");
+			
 			String sql = "select qfile from qa_board where qidx=?";
 			pst = con.prepareStatement(sql);
 			pst.setString(1, qidx);
@@ -38,6 +42,7 @@ public class m_qadel extends HttpServlet {
 			String qfile = rs.getString("qfile");
 			String dbqfile1 = "";
 			String dbqfile2 = "";
+			
 			if(!qfile.equals("")) {
 				String url = request.getServletContext().getRealPath("/upload/");
 				//첨부파일이 2개인 경우
@@ -45,9 +50,7 @@ public class m_qadel extends HttpServlet {
 					int i = qfile.indexOf(",");
 					
 					dbqfile1 = qfile.substring(0,i);
-					System.out.println(dbqfile1);
 					dbqfile2 = qfile.substring(i+1);
-					System.out.println(dbqfile2);
 					
 					
 					
@@ -55,12 +58,14 @@ public class m_qadel extends HttpServlet {
 					int id2 = dbqfile2.lastIndexOf("/");
 					String filenm1 = dbqfile1.substring(id1+1);
 					String filenm2 = dbqfile2.substring(id2+1);
-					
+					if(modfile1 != null) {
 					File fe1 = new File(url+filenm1); 
 					fe1.delete();
-					
+					}
+					if(modfile2 != null) {
 					File fe2 = new File(url+filenm2); 
 					fe2.delete();
+					}
 				}
 				//첨부파일이 1개인 경우
 				else {
@@ -82,13 +87,13 @@ public class m_qadel extends HttpServlet {
 						+ "location.href='./m_qalist.jsp';"
 						+ "</script>");
 			}
-				
+		
 		}catch(Exception e){
-			System.out.println(e);
+			e.printStackTrace();
 		}finally {
 			try {
-				rs.close();
-				pst.close();
+				//rs.close();
+				//pst.close();
 				con.close();
 			}catch (Exception e) {
 				e.printStackTrace();

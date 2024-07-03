@@ -7,7 +7,7 @@
         <ul>
             <li>팬션 예약확인</li>
             <li>팬션 예약취소</li>
-            <li>1:1문의 게시판</li>
+            <li><a href="./m_qalist.jsp">1:1문의 게시판</a></li>
         </ul>
     </div>
 </div>

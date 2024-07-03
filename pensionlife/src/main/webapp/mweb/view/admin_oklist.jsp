@@ -6,9 +6,10 @@
     pageEncoding="UTF-8"%>
 <%@ page import="model.dbconfig" %>
 <%
+
 	HttpSession se = request.getSession();
 	String admin_id = (String)se.getAttribute("admin_id");
-	
+
 	dbconfig db = new dbconfig();
 	Connection dbcon = db.getdbconfig();
 	
@@ -22,7 +23,7 @@
 	int list = 10;
 	
 	//DB데이터 역순으로 10개씩 가져옴
-	String sql = "select * from qa_board where qhandle='미답변' order by qidx desc limit ?,?";
+	String sql = "select * from qa_board where qhandle='답변완료' order by qidx desc limit ?,?";
 	PreparedStatement pst = dbcon.prepareStatement(sql);
 	pst.setInt(1, pages);
 	pst.setInt(2, list);
@@ -44,7 +45,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=1">
     <link rel="stylesheet" type="text/css" href="../admin_css/index.css?v=5">
     <script src="../js/jquery.js"></script>
-    <script src="../admin_js/admin_qalist.js"></script>
+    <script src="../admin_js/admin_oklist.js"></script>
 </head>
 <body>
 <form id="frm">
@@ -55,7 +56,7 @@
     <p><img src="../admin_img/logo.png"><span id="admin_logout"><%=admin_id%>님 환영합니다.[로그아웃]</span></p>
 </aside>
 <article class="admin_lists">
-    <p>QA 문의 게시판 미답변 리스트</p>
+    <p>QA 문의 게시판 답변 완료 리스트</p>
     <ul class="lists_uls color1">
         <li>제목</li>
         <li>글쓴이</li>
@@ -95,13 +96,13 @@
 				for(int f=1; f<=pg; f++){ 
 				%>
 				<!-- 5개 리스트 출력 페이지 넘버 -->
-				<td width="20" align="center"><a href="./admin_qalist.jsp?pno=<%=f %>"><%=f %></a></td>
+				<td width="20" align="center"><a href="./admin_oklist.jsp?pno=<%=f %>"><%=f %></a></td>
 				<%
 				} 
 				%>
 			</tr>
 		</table>
-<input type="button" class="adbtn1" value="답변완료 리스트">
+<input type="button" class="adbtn1" value="미답변 리스트">
 <br><br>
 <%@ include file="../copyright.jsp" %>
 </body>

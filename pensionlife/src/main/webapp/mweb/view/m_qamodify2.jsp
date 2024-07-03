@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="model.dbconfig" %>
 <%
-	//Update 사용하여 수정하는 jsp
+	//Ajax 사용하여 delete->insert로 수정하는 jsp
 	HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
 	String user_name = (String)se.getAttribute("user_name");
@@ -30,6 +30,9 @@
 	String qfile2 = null;
 	String dbqfile1 = "";
 	String dbqfile2 = "";
+	String modfile1 = "";
+	String modfile2 = "";
+	
 	if(qidx != null){
 		dbconfig db = new dbconfig();
 		con = db.getdbconfig();
@@ -49,6 +52,8 @@
 			int id = qfile.indexOf(",");
 			dbqfile1 = qfile.substring(0,id);
 			dbqfile2 = qfile.substring(id+1);
+			modfile1 = dbqfile1.substring(dbqfile1.lastIndexOf("/")+1);
+			modfile2 = dbqfile2.substring(dbqfile2.lastIndexOf("/")+1);
 			qfile1 = dbqfile1.substring(dbqfile1.lastIndexOf("_")+1);
 			qfile2 = dbqfile2.substring(dbqfile2.lastIndexOf("_")+1);
 		}
@@ -56,6 +61,7 @@
 		else if(qfile != ""){
 			file_ea = 1;
 			dbqfile1 = qfile;
+			modfile1 = dbqfile1.substring(dbqfile1.lastIndexOf("/")+1);
 			qfile1 = qfile.substring(qfile.lastIndexOf("_")+1);
 		}
 	}else{
@@ -74,7 +80,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=3">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
-    <script src="../js/m_qamodify.js?v=2"></script>
+    <script src="../js/m_qamodify2.js?v=3"></script>
 </head>
 <body> 
 <!-- 상단 시작 -->
@@ -87,11 +93,12 @@
 <!-- 중단 -->
 <section class="subpage">
 <form id="frm">
+<input type="hidden" value="<%=rs.getTimestamp("qdate") %>" name="qdate">
     <div class="member_agree">
         <p>1:1 문의게시판(문의수정)</p>
         <span class="sub_titles">빠르게 궁금한 사항을 답변 드리도록 하겠습니다.</span>
         <ul class="write_ul">
-        	<input type="hidden" value="<%=qidx %>" name="qidx">
+        	<input type="hidden" value="<%=qidx %>" id="qidx" name="qidx">
         	<input type="hidden" value="<%=rs.getString("qhead") %>" name="qhead">
             <li class="cate_txt">질문항목 : <%=rs.getString("qhead") %></li>
             <li><input type="text" class="w_input1 w_bg" name="user_name" value="<%=rs.getString("user_name") %>" readonly></li>
@@ -101,9 +108,9 @@
             <li><textarea class="w_input2" id="qtext" name="qtext" placeholder="질문 내용"><%=rs.getString("qtext")%></textarea></li>
             
 	        <!-- 첫번째 첨부파일 -->
-	        <%if(qfile1 != null){ %>
 	        <input type="hidden" value="N" id="file1_del" name="file1_del">
-	        <input type="hidden" value="<%=qfile1 %>" name="qfile1_val">
+	        <%if(qfile1 != null){ %>
+	        <input type="hidden" value="<%=modfile1 %>" id="qfile1_val" name="qfile1_val">
 			<li id="qfileview1a" style="display:none"><input type="file" id="qfile1" name="qfile1" class="w_li"> * 최대 2MB까지 가능</li>
 			<li class="fileview" id="qfileview1b" >첨부파일 : <a href="<%out.print(dbqfile1);%>" target="_blank"><%out.print(qfile1); %></a> 
 			&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="삭제" onclick="filedel_btn(1)"> </li>
@@ -112,9 +119,9 @@
 			<%} %>
 			
 			<!-- 두번째 첨부파일 -->
-			<%if(qfile2 != null){ %>
 			<input type="hidden" value="N" id="file2_del" name="file2_del">
-			<input type="hidden" value="<%=qfile2 %>" name="qfile2_val">
+			<%if(qfile2 != null){ %>
+			<input type="hidden" value="<%=modfile2 %>" id="qfile2_val" name="qfile2_val">
 			<li id="qfileview2a" style="display:none"><input type="file" id="qfile2" name="qfile2" class="w_li"> * 최대 2MB까지 가능</li>
 			<li class="fileview" id="qfileview2b">첨부파일 : <a href="<%out.print(dbqfile2);%>" target="_blank"><%out.print(qfile2); %></a> 
 			&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="삭제" onclick="filedel_btn(2)"> </li>
