@@ -47,6 +47,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+	<servlet-name>change_pw</servlet-name>
+	<servlet-class>sign.change_pw</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>change_pw</servlet-name>
+	<url-pattern>/mweb/view/change_pw.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 	<servlet-name>reservation</servlet-name>
 	<servlet-class>reservation.room_info</servlet-class>
 	</servlet>

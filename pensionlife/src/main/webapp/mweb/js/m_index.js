@@ -120,7 +120,7 @@ $(()=>{
 		const user_name = document.querySelector("#user_name").value;
 		const user_tel = document.querySelector("#user_tel").value;
 		const user_email = document.querySelector("#user_email").value;
-		const id_searchview = document.querySelector("#id_searchview").value;
+		const id_searchview = document.querySelector("#id_searchview");
 		$.ajax({
 			type : "post",
 			url : "./find_id.do",
@@ -131,10 +131,36 @@ $(()=>{
 			},
 			success : function($user_id){
 				console.log($user_id);
-				//id_searchview = user_id;
+				id_searchview.innerText = "고객님의 아이디는 " + $user_id + "입니다."; 
 			},
 			error : ((error)=>{
-				console.log(error);
+				id_searchview.innerText = "해당 고객정보는 확인이 되지 않습니다.";
+			}),
+		});
+	})
+	
+	//비밀번호 찾기
+	$("#btn_changePw").click(()=>{
+		const user_id = document.querySelector("#user_id2").value;
+		const user_name = document.querySelector("#user_name2").value;
+		const user_tel = document.querySelector("#user_tel2").value;
+		
+		$.ajax({
+			type : "post",
+			url : "./change_pw.do",
+			data : {
+				user_id : user_id,
+				user_name : user_name,
+				user_tel : user_tel,
+			},
+			success : function(success){
+				if(success == "true"){
+					alert(user_name + '님의 비밀번호 변경이 완료되었습니다.');
+					location.href = './m_index.jsp'
+				}
+			},
+			error : ((error)=>{
+				id_searchview.innerText = "해당 고객정보는 확인이 되지 않습니다.";
 			}),
 		});
 	})
