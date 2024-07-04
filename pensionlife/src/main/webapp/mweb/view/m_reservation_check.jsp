@@ -7,24 +7,26 @@
     pageEncoding="UTF-8"%>
 <%@ page import="model.dbconfig" %>
 <%
-	//session, 자동로그인
-	HttpSession se = request.getSession();
-	String user_id = (String)se.getAttribute("user_id");
-	String user_name = (String)se.getAttribute("user_name");
-	boolean login_check = false;
-	if(se.getAttribute("login_check") != null){
-		login_check = true;
-	};
-	
     request.setCharacterEncoding("utf-8");
     dbconfig db = new dbconfig();
     Connection dbcon = db.getdbconfig();
     
-    String pname=request.getParameter("hpname");
-    String sql="select * from pension_list where pname=?";
+  	//session, 자동로그인
+  	HttpSession se = request.getSession();
+  	String user_id = (String)se.getAttribute("user_id");
+  	String user_name = (String)se.getAttribute("user_name");
+  	boolean login_check = false;
+  	if(se.getAttribute("login_check") != null){
+  		login_check = true;
+  	};
+	
+    String ridx=request.getParameter("ridx");
+    String sql="select a.user_name,b.r_pname,b.r_room,b.checkin_date,c.rdetail,b.r_tel,b.r_cp,c.rprice,b.r_email,b.r_date from user_info as a join reserve_data as b join pension_list as c where a.user_name=b.r_name and b.r_room=c.rname and a.user_id=? and r_idx=?";
     PreparedStatement ps=dbcon.prepareStatement(sql);
-    ps.setString(1, pname);
+    ps.setString(1, user_id);
+    ps.setString(2, ridx);
     ResultSet rs=ps.executeQuery();
+    rs.next();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -37,19 +39,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_reservation.css?v=2">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js?v=4"></script>
-    <script src="../js/m_reservation.js?v=1"></script>
-    <style>
-        .ui-datepicker-header {
-            background-color: #87CEEB !important; 
-        }
-        .ui-state-highlight {
-            color: #0000FF !important;
-        }
-    </style>
 </head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <body>
 <!-- 상단 시작 -->
 <%@ include file="../top.jsp" %>
@@ -60,44 +50,37 @@
 <!-- 배너 끝-->
 <!-- 중단 -->
 <section class="subpage">
-    <form id="form">
     <div class="member_agree">
-    <p>펜션 예약하기</p>
+    <p>펜션 예약확인</p>
     <ol class="reser_ol">
     <li>
     <span class="reser_part1">펜션명</span>
     <span class="reser_part2">
-    <%=pname %>
-    </span>
-    <input type="hidden" name="pname" id="pname" value="<%=request.getParameter("hpname") %>">
-    </li>
-    <li>
-    <span class="reser_part1">일자선택</span>
-    <span class="reser_part2">
-    <input type="text" id="datepicker" name="checkin_date" placeholder="날짜를 선택하세요" readonly>
+<%out.print(rs.getString("r_pname")); %>
     </span>
     </li>
     <li>
-    <span class="reser_part1">객실선택</span>
+    <span class="reser_part1">예약일자</span>
     <span class="reser_part2">
-    <select onchange="rinfo(this.value)" id="selectr" name="selectr" class="reser_select">
-    <option value="">객실선택</option>
-    <%while(rs.next()){ %>
-    <option value="<%=rs.getString("rname") %>"><%=rs.getString("rname") %></option>
-    <%} %>
-    </select>
+<% out.print(rs.getString("checkin_date"));%>
+    </span>
+    </li>
+    <li>
+    <span class="reser_part1">객실명</span>
+    <span class="reser_part2">
+<% out.print(rs.getString("r_room"));%>
     </span>
     </li>
     <li>
     <span class="reser_part1">객실구조</span>
     <span id="rdetail" class="reser_part2">
-    원하시는 객실을 선택하세요
+<% out.print(rs.getString("rdetail"));%>
     </span>
     </li>
     <li>
     <span class="reser_part1">입실인원</span>
     <span id="rsp_rmp" class="reser_part2">
-    원하시는 객실을 선택하세요
+<% out.print(rs.getString("r_cp"));%>
     </span>
     </li>
     <li>
@@ -109,60 +92,68 @@
     <li>
     <span class="reser_part1">객실요금</span>
     <span id="rprice" class="reser_part2">
-    원하시는 객실을 선택하세요
+<% out.print(rs.getString("rprice"));%>
     </span>
     </li>
     </ol>
     
-    <p>예약자정보 입력</p>
+    <p>예약자정보</p>
         <ol class="reser_ol">
     <li>
-    <span class="reser_part1">객실선택</span>
+    <span class="reser_part1">객실명</span>
     <span class="reser_part2">
-    <input type="text" class="reser_select" id="r_room" name="r_room" value="객실을 선택하세요" readonly>
+<% out.print(rs.getString("r_room"));%>
     </span>
     </li>
     <li>
     <span class="reser_part1">예약자명</span>
     <span class="reser_part2">
-    <%if(user_name!=null){ %>
-	<input type="text" id="r_name" name="r_name" class="reser_input" placeholder="예약자명" maxlength="30" value="<%=user_name%>">
-    <%}else{ %>
-	<input type="text" id="r_name" name="r_name" class="reser_input" placeholder="예약자명" maxlength="30">
-    <%}%>
+<%out.print(rs.getString("user_name")); %>
     </span>
     </li>
     <li>
     <span class="reser_part1">휴대폰</span>
     <span class="reser_part2">
-    <input type="number" id="r_tel" name="r_tel" class="reser_input" placeholder="'-'없이 입력하세요" maxlength="11" oninput="tel_maxlength(this)">
+<% out.print(rs.getString("r_tel"));%>
     </span>
     </li>
     <li>
     <span class="reser_part1">입실인원</span>
     <span class="reser_part2">
-    <select id="pselect" name="r_cp" class="reser_select">
-    <option value="">입실 인원선택</option>
-    </select>
+<% out.print(rs.getString("r_cp"));%>
     </span>
     </li>
     <li>
     <span class="reser_part1">이메일</span>
     <span class="reser_part2">
-    <input type="email" id="r_email" name="r_email" class="reser_input" maxlength="50" placeholder="example@pensionlife.com">
+<% out.print(rs.getString("r_email"));%>
     </span>
     </li>
     </ol>
-    <div class="member_agreebtn" onclick="reserve_ok()">예약하기</div>
+    <div class="member_agreebtn" onclick="reserve_cancel()">예약취소</div>
     </div>
-    </form>
 </section>
 <!-- 하단 시작 -->
 <%@ include file="../Qmenu.jsp" %>
 </main>
 <%@ include file="../copyright.jsp" %>
+<form id="frm_del">
+<input type="hidden" name="ridx" value="<%=ridx%>">
+</form>
 </body>
 <%@ include file="../login_auto.jsp" %>
+<script>
+function reserve_cancel(){
+	var frm_del=document.getElementById("frm_del");
+		if(confirm('예약 취소 후 복구가 불가능합니다. 취소 하시겠습니까?')){
+			frm_del.method="post";
+			frm_del.action="./reserve_data_delete.do";
+			frm_del.submit();
+	}else{
+			return false;
+	}
+}
+</script>
 </html>
 <%
 rs.close();

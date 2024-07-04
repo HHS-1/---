@@ -1,3 +1,8 @@
+function openPopup(url) {
+        window.open(url, '이미지', 'width=800,height=600'); // 적절한 창 크기로 변경 가능
+    }
+
+//삭제버튼 클릭시 작동
 function filedel_btn(z){
 	if(z==1){
 		document.getElementById("file1_del").value = "Y";
@@ -13,6 +18,7 @@ function filedel_btn(z){
 }
 
 $(function(){
+	//리뷰 삭제
 	$("#delete_btn").click(function(){
 		if(confirm('리뷰를 삭제하시겠습니까?')){
 			$("#frm").attr("method","post");
@@ -20,7 +26,7 @@ $(function(){
 			$("#frm").submit();
 		}
 	})
-	
+	//리뷰 수정
 	$("#modify_btn").click(function(){
 		$.ajax({
 			url : "./m_qadel.do",

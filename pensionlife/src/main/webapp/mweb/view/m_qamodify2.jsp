@@ -1,3 +1,4 @@
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
@@ -13,31 +14,31 @@
 	String user_name = (String)se.getAttribute("user_name");
 	
 	String qidx = request.getParameter("qidx");
-	Connection con = null;
+	Connection dbcon = null;
 	PreparedStatement pst = null;
 	ResultSet rs = null;
-	boolean mod = false;
-	//문의유형에 onselect를 적용하기 위해 만든 리스트
-	List<String> pt = new ArrayList<String>();
-	for(int f=0; f<6; f++){
-		pt.add("");
-	}
-	//첨부파일 갯수
-	int file_ea = 0;
-	//첨부파일관련 변수
-	String qfile = "";
-	String qfile1 = null;
-	String qfile2 = null;
-	String dbqfile1 = "";
-	String dbqfile2 = "";
-	String modfile1 = "";
-	String modfile2 = "";
 	
-	if(qidx != null){
+	try{
+		//문의유형에 onselect를 적용하기 위해 만든 리스트
+		List<String> pt = new ArrayList<String>();
+		for(int f=0; f<6; f++){
+			pt.add("");
+		}
+		//첨부파일 갯수
+		int file_ea = 0;
+		//첨부파일관련 변수
+		String qfile = "";
+		String qfile1 = null;
+		String qfile2 = null;
+		String dbqfile1 = "";
+		String dbqfile2 = "";
+		String modfile1 = "";
+		String modfile2 = "";
+	
 		dbconfig db = new dbconfig();
-		con = db.getdbconfig();
+		dbcon = db.getdbconfig();
 		String sql = "select * from qa_board where qidx=?";
-		pst = con.prepareStatement(sql);
+		pst = dbcon.prepareStatement(sql);
 		pst.setString(1, qidx);
 		rs = pst.executeQuery();
 		rs.next();
@@ -64,10 +65,6 @@
 			modfile1 = dbqfile1.substring(dbqfile1.lastIndexOf("/")+1);
 			qfile1 = qfile.substring(qfile.lastIndexOf("_")+1);
 		}
-	}else{
-		//수정버튼이 아닌 주소로 직접 접근 막음
-		out.print("<script>alert('올바른 접근이 아닙니다.');</script>");
-	}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -80,7 +77,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=3">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
-    <script src="../js/m_qamodify2.js?v=3"></script>
+    <script src="../js/m_qamodify2.js?v=4"></script>
 </head>
 <body> 
 <!-- 상단 시작 -->
@@ -112,7 +109,7 @@
 	        <%if(qfile1 != null){ %>
 	        <input type="hidden" value="<%=modfile1 %>" id="qfile1_val" name="qfile1_val">
 			<li id="qfileview1a" style="display:none"><input type="file" id="qfile1" name="qfile1" class="w_li"> * 최대 2MB까지 가능</li>
-			<li class="fileview" id="qfileview1b" >첨부파일 : <a href="<%out.print(dbqfile1);%>" target="_blank"><%out.print(qfile1); %></a> 
+			<li class="fileview" id="qfileview1b" >첨부파일 : <a href="#" onclick="openPopup('<%=dbqfile1%>')"><%out.print(qfile1); %></a> 
 			&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="삭제" onclick="filedel_btn(1)"> </li>
 			<%}else{ %>
 			<li id="qfileview1a"><input type="file" id="qfile1" name="qfile1" class="w_li"> * 최대 2MB까지 가능</li>
@@ -123,7 +120,7 @@
 			<%if(qfile2 != null){ %>
 			<input type="hidden" value="<%=modfile2 %>" id="qfile2_val" name="qfile2_val">
 			<li id="qfileview2a" style="display:none"><input type="file" id="qfile2" name="qfile2" class="w_li"> * 최대 2MB까지 가능</li>
-			<li class="fileview" id="qfileview2b">첨부파일 : <a href="<%out.print(dbqfile2);%>" target="_blank"><%out.print(qfile2); %></a> 
+			<li class="fileview" id="qfileview2b">첨부파일 : <a href="#" onclick="openPopup('<%=dbqfile2%>')"><%out.print(qfile2); %></a> 
 			&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="삭제" onclick="filedel_btn(2)"> </li>
 			<%}else{ %>
 			<li id="qfileview2a" ><input type="file" id="qfile2" name="qfile2" class="w_li"> * 최대 2MB까지 가능</li>
@@ -141,4 +138,14 @@
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
+<%@ include file="../login_auto.jsp" %>
 </html>
+<%
+	}catch(Exception e){
+		out.print("<script>alert('세션이 만료되어 메인 페이지로 이동됩니다.'); location.href='./m_index.jsp';</script>");
+	}finally{
+		if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+		if (pst != null) try { pst.close(); } catch (SQLException e) { e.printStackTrace(); }
+		if (dbcon != null) try { dbcon.close(); } catch (SQLException e) { e.printStackTrace(); }
+	}
+%>

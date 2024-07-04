@@ -23,14 +23,14 @@
 	int list = 10;
 	
 	//DB데이터 역순으로 10개씩 가져옴
-	String sql = "select * from qa_board where qhandle='답변완료' order by qidx desc limit ?,?";
+	String sql = "select * from qa_board where qhandle='답변완료' order by qdate desc limit ?,?";
 	PreparedStatement pst = dbcon.prepareStatement(sql);
 	pst.setInt(1, pages);
 	pst.setInt(2, list);
 	ResultSet rs = pst.executeQuery();
 	
 	//DB qa_board 데이터개수 파악
-	String sql2 = "select count(*) as ctn from qa_board";
+	String sql2 = "select count(*) as ctn from qa_board where qhandle='답변완료'";
 	pst = dbcon.prepareStatement(sql2);
 	ResultSet rs2 = pst.executeQuery();
 	rs2.next();

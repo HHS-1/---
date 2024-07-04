@@ -149,4 +149,12 @@
         width: 100%;
         height: 50px;
     }
+    #paging_bar{
+    	margin : 0 auto;
+    }
+    .paging_number{
+    	text-decoration : none;
+    	color : black;
+    	font-weight : bold;
+    }
 }

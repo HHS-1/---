@@ -32,6 +32,12 @@ public class m_qadel extends HttpServlet {
 			//Ajax사용 jsp에서 받아오는 변수
 			String modfile1 = request.getParameter("modfile1");
 			String modfile2 = request.getParameter("modfile2");
+			if(modfile1 == null) {
+				modfile1 = "";
+			}
+			if(modfile2 == null) {
+				modfile2 = "";
+			}
 			
 			String sql = "select qfile from qa_board where qidx=?";
 			pst = con.prepareStatement(sql);
@@ -59,11 +65,11 @@ public class m_qadel extends HttpServlet {
 					int id2 = dbqfile2.lastIndexOf("/");
 					String filenm1 = dbqfile1.substring(id1+1);
 					String filenm2 = dbqfile2.substring(id2+1);
-					if(modfile1 == null || modfile1.equals("")) {
+					if(modfile1.equals("")) {
 					File fe1 = new File(url+filenm1); 
 					fe1.delete();
 					}
-					if(modfile2 == null || modfile2.equals("")) {
+					if(modfile2.equals("")) {
 					File fe2 = new File(url+filenm2); 
 					fe2.delete();
 					}
@@ -72,7 +78,7 @@ public class m_qadel extends HttpServlet {
 				else {
 					int id = qfile.lastIndexOf("/");
 					String filenm = qfile.substring(id+1);
-					if(modfile1 == null) {
+					if(modfile1.equals("")) {
 						File fe = new File(url+filenm); 
 						fe.delete();
 					}

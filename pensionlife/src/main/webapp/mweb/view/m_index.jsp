@@ -14,9 +14,6 @@
 		login_check = true;
 	};
 	
-	
-	
-	
     dbconfig db = new dbconfig();
 	Connection dbcon = db.getdbconfig();
     String sql="select * from pension_list group by pname order by rprice";
@@ -31,7 +28,7 @@
     <title>호텔 & 펜션 예약시스템</title>
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=6">
     <script src="../js/jquery.js"></script>
-    <script src="../js/m_index.js?v=3"></script>
+    <script src="../js/m_index.js?v=6"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -65,60 +62,7 @@
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
-<script>
-	
-	
-	window.addEventListener('load', set_localStorage);
-	if(<%=login_check%> == false){
-		console.log("자동로그인")
-		window.addEventListener('load', login_auto);
-	}
-	
-
-	//자동로그인
-	function set_localStorage(){
-		if('<%=se.getAttribute("login_auto")%>'== "Y"){
-			const user_id = '<%=user_id%>';
-			const date = new Date();
-			const data_autoLogin = {
-					value: user_id,
-			        expiry: date.getTime() + 100000,
-			};
-			
-			localStorage.setItem("data_autoLogin",JSON.stringify(data_autoLogin));
-		}else{
-			return null;
-		}
-	}
-	
-	function login_auto(){
-		 const data = localStorage.getItem("data_autoLogin");
-		 const data_autoLogin = JSON.parse(data);
-		 console.log(data_autoLogin.value);
-		 if(data_autoLogin == null) return null;
-		 else{
-			 const date = new Date();
-			 if(date.getTime() > data_autoLogin.expiry){
-				 localStorage.removeItem("data_autoLogin");
-			 }else{
-				 $.ajax({
-						type : "post",
-						url : "./sign_in_auto.do",
-						data : {
-							user_id : data_autoLogin.value,
-						},
-						success : function(){
-							location.reload();		
-						},
-						error : ((error)=>{
-							console.log(error);
-						}),
-					});
-			 }
-		 }
-	}
-
-</script>
+<%@ include file="../login_auto.jsp" %>
 </html>
 <%
 rs.close();

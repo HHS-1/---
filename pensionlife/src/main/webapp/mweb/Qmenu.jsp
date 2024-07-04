@@ -9,7 +9,7 @@
             <li>FAQ</li>
             <li>개인정보취급방침</li>
             <li>이용약관</li>
-            <li>예약관리시스템</li>
+            <li><a href="./admin_login.jsp" style="color: red; text-decoration: none;">예약관리시스템</a></li>
         </ul>
     </div>
 </section>

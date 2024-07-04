@@ -64,7 +64,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
     <link rel="stylesheet" type="text/css" href="../admin_css/index.css?v=7">
     <script src="../js/jquery.js"></script>
-    <script src="../admin_js/admin_qawrite.js"></script>
+    <script src="../admin_js/admin_qawrite.js?v=1"></script>
 </head>
 <body>
 <header class="admin_header"><img src="../img/header_logo.png"></header>
@@ -89,8 +89,8 @@
         <%if(qfile.equals("")){ %>
         첨부파일이 없습니다.
         <%}else{ %>
-        <a href="<%out.print(dbqfile1);%>" target="_blank"><%out.print(qfile1); %></a>
-        <a href="<%out.print(dbqfile2);%>" target="_blank"><%out.print(qfile2); %></a>
+        <a href="#" onclick="openPopup('<%=dbqfile1%>')"><%out.print(qfile1); %></a>
+        <a href="#" onclick="openPopup('<%=dbqfile2%>')"><%out.print(qfile2); %></a>
         <%} %>
         </li>
         <li>답변</li>

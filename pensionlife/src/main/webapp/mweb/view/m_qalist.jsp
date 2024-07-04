@@ -1,3 +1,4 @@
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -6,38 +7,49 @@
 <%@page import="model.dbconfig" %>
 
 <%
+	//session, 자동로그인
 	HttpSession se = request.getSession();
 	String user_id = (String)se.getAttribute("user_id");
 	String user_name = (String)se.getAttribute("user_name");
+	boolean login_check = false;
+	if(se.getAttribute("login_check") != null){
+		login_check = true;
+	};
 	
+	Connection dbcon = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+	ResultSet rs2 = null;
+
+	try{
 	dbconfig db = new dbconfig();
-	Connection dbcon = db.getdbconfig();
+	dbcon = db.getdbconfig();
 
 	request.setCharacterEncoding("utf-8");
 	response.setContentType("text/html;charset=utf-8");
 	
-	//리스트 5개씩 출력
+	//리스트 10개씩 출력
 	int pno = 1;
 	if(request.getParameter("pno") != null){
 		pno = Integer.parseInt(request.getParameter("pno")); 
 	}
 	
-	int pages = (pno-1)*5;
-	int list = 5;
+	int pages = (pno-1)*10;
+	int list = 10;
 	
-	//DB데이터 역순으로 5개씩 가져옴
-	String sql = "select * from qa_board where user_id=? order by qidx desc limit ?,?";
-	PreparedStatement pst = dbcon.prepareStatement(sql);
+	//DB데이터 역순으로 10개씩 가져옴
+	String sql = "select * from qa_board where user_id=? order by qdate desc limit ?,?";
+	pst = dbcon.prepareStatement(sql);
 	pst.setString(1, user_id);
 	pst.setInt(2, pages);
 	pst.setInt(3, list);
-	ResultSet rs = pst.executeQuery();
+	rs = pst.executeQuery();
 	
 	//DB qa_board 데이터개수 파악
 	String sql2 = "select count(*) as ctn from qa_board where user_id=?";
 	pst = dbcon.prepareStatement(sql2);
 	pst.setString(1, user_id);
-	ResultSet rs2 = pst.executeQuery();
+	rs2 = pst.executeQuery();
 	rs2.next();
 	int ctn = rs2.getInt("ctn");
 %>
@@ -49,10 +61,10 @@
     <title>호텔 & 펜션 예약시스템</title>
     <link rel="stylesheet" type="text/css" href="../css/m_index.css?v=2">
     <link rel="stylesheet" type="text/css" href="../css/m_sub.css?v=3">
-    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=4">
+    <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=6">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
-    <script src="../js/m_qalist.js?v=1"></script>
+    <script src="../js/m_qalist.js?v=3"></script>
 </head>
 <body>
 <!-- 상단 시작 -->
@@ -73,7 +85,11 @@
             <li>등록일</li>
             <li>처리</li>
         </ul>
-        <%if(ctn<=0){ %>
+        <%if(user_id==null){ %>
+        <ul class="qa_lists2">
+        	<li>로그인 하시면 리스트가 출력됩니다.</li>
+       	</ul>
+        <%}else if(ctn<=0){ %>
         <ul class="qa_lists2">
         	<li>문의하신 내용이 없습니다.</li>
        	</ul>
@@ -104,22 +120,24 @@
         	}
         }
 	    %>
-        <table border="1" cellpadding="0" cellspacing="0">
+
+        <table id="paging_bar">
 			<tr>
 				<% 
 				double alldata = rs2.getInt("ctn");
 				int pg = (int)Math.ceil(alldata/list);
 				for(int f=1; f<=pg; f++){ 
 				%>
-				<!-- 5개 리스트 출력 페이지 넘버 -->
-				<td width="20" align="center"><a href="./m_qalist.jsp?pno=<%=f %>"><%=f %></a></td>
+				<!-- 10개 리스트 출력 페이지 넘버 -->
+				<td width="20" align="center"><a class="paging_number" id=<%=f %> href="./m_qalist.jsp?pno=<%=f %>"><%=f %></a></td>
 				<%
 				} 
 				%>
 			</tr>
 		</table>
+		</div>
         <div class="member_agreebtn" onclick="member_agreebtn()">문의하기</div>
-    </div>
+
 </section>
 <form id="frm">
 <input type="hidden" id="hd" name="qidx" value="">
@@ -129,9 +147,15 @@
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
+<%@ include file="../login_auto.jsp" %>
 </html>
 <%
-rs.close();
-pst.close();
-dbcon.close();
+	}catch(Exception e){
+		out.print("<script>alert('세션이 만료되어 메인 페이지로 이동됩니다.'); location.href='./m_index.jsp';</script>");
+	}finally{
+		if (rs2 != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+		if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+	    if (pst != null) try { pst.close(); } catch (SQLException e) { e.printStackTrace(); }
+	    if (dbcon != null) try { dbcon.close(); } catch (SQLException e) { e.printStackTrace(); }
+	}
 %>

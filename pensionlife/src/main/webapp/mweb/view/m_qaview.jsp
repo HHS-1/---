@@ -24,7 +24,7 @@
 	
 	String sql = "select * from qa_board where qidx=?";
 	pst = dbcon.prepareStatement(sql);
-	pst.setString(1, qidx);
+	pst.setString(1, qidx); 
 	rs = pst.executeQuery();
 	rs.next();
 	
@@ -33,25 +33,21 @@
 	String dbqfile2 = "";
 	String qfile1 = "";
 	String qfile2 = "";
-	//첨부파일 1개인지 2개인지 파악후 파일명만 갖고옴
+	//첨부파일 갯수 파악, 파일이름 추출, 파일경로 파악
 	if(qfile.contains(",")){
 		int i = qfile.indexOf(",");
 		
 		dbqfile1 = qfile.substring(0,i);
-		int li = dbqfile1.lastIndexOf("/");
-		int li2 = dbqfile1.lastIndexOf("_");
-		qfile1 = dbqfile1.substring(li2+1);
+		int li = dbqfile1.lastIndexOf("_");
+		qfile1 = dbqfile1.substring(li+1);
 		
 		dbqfile2 = qfile.substring(i+1);
-		li = dbqfile2.lastIndexOf("/");
-		li2 = dbqfile2.lastIndexOf("_");
-		qfile2 = dbqfile2.substring(li2+1);
+		li = dbqfile2.lastIndexOf("_");
+		qfile2 = dbqfile2.substring(li+1);
 	}else{
-		int li = qfile.lastIndexOf("/");
-		int li2 = qfile.lastIndexOf("_");
+		int li = qfile.lastIndexOf("_");
+		dbqfile1 = qfile;
 		qfile1 = qfile.substring(li+1);
-		dbqfile1 = "/upload/"+qfile1;
-		qfile1 = qfile.substring(li2+1);
 	}
 	
 %>
@@ -66,7 +62,7 @@
     <link rel="stylesheet" type="text/css" href="../css/m_qaboard.css?v=4">
     <script src="../js/jquery.js"></script>
     <script src="../js/m_index.js"></script>
-    <script src="../js/m_qaview.js?v=3"></script>
+    <script src="../js/m_qaview.js?v=5"></script>
 </head>
 <body>
 <form id="frm">
@@ -108,8 +104,8 @@
             <%
             }else{ 
             %>
-            <li class="fileview">첨부파일 : <a href="<%out.print(dbqfile1);%>" target="_blank"><%out.print(qfile1); %></a> </li>
-            <li class="fileview">첨부파일 : <a href="<%out.print(dbqfile2);%>" target="_blank"><%out.print(qfile2); %></a> </li>
+            <li class="fileview">첨부파일 : <a href="#" onclick="openPopup('<%=dbqfile1%>')"><%out.print(qfile1); %></a> </li>
+            <li class="fileview">첨부파일 : <a href="#" onclick="openPopup('<%=dbqfile2%>')"><%out.print(qfile2); %></a> </li>
             <%
             }
             %>
@@ -139,10 +135,11 @@
 <%@ include file="../copyright.jsp" %>
 </form>
 </body>
+<%@ include file="../login_auto.jsp" %>
 </html>
 <%
 	} catch (Exception e) {
-        e.printStackTrace();
+		out.print("<script>alert('세션이 만료되어 메인 페이지로 이동됩니다.'); location.href='./m_index.jsp';</script>");
     } finally {
         if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
         if (pst != null) try { pst.close(); } catch (SQLException e) { e.printStackTrace(); }

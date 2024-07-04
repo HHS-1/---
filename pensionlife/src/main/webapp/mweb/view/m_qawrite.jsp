@@ -1,3 +1,4 @@
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
@@ -6,17 +7,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="model.dbconfig" %>
+
+
     <%
-    HttpSession se = request.getSession();
-	String user_id = (String)se.getAttribute("user_id");
-	String user_name = (String)se.getAttribute("user_name");
+  	//session, 자동로그인
+  	HttpSession se = request.getSession();
+  	String user_id = (String)se.getAttribute("user_id");
+  	String user_name = (String)se.getAttribute("user_name");
+  	boolean login_check = false;
+  	if(se.getAttribute("login_check") != null){
+  		login_check = true;
+  	};
 	
+	Connection dbcon = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+	
+	if(user_id == null){
+		out.print("<script>alert('권한이 없습니다.'); history.go(-1);</script>");
+	}else{
+		try{
+		
 	dbconfig db = new dbconfig();
-	Connection con = db.getdbconfig();
+	dbcon = db.getdbconfig();
 	String sql = "select * from user_info where user_id=?";
-	PreparedStatement pst = con.prepareStatement(sql);
+	pst = dbcon.prepareStatement(sql);
 	pst.setString(1, user_id);
-	ResultSet rs = pst.executeQuery();
+	rs = pst.executeQuery();
 	rs.next();
     %>
 <!DOCTYPE html>
@@ -74,4 +91,16 @@
 </main>
 <%@ include file="../copyright.jsp" %>
 </body>
+<%@ include file="../login_auto.jsp" %>
 </html>
+<%
+		}catch(Exception e){
+			out.print("<script>alert('세션이 만료되어 메인 페이지로 이동됩니다.'); location.href='./m_index.jsp';</script>");
+		}finally{
+			if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+		    if (pst != null) try { pst.close(); } catch (SQLException e) { e.printStackTrace(); }
+		    if (dbcon != null) try { dbcon.close(); } catch (SQLException e) { e.printStackTrace(); }
+		}
+		
+	}
+%>

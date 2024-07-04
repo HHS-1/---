@@ -5,10 +5,12 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import model.dbconfig;
 
 public class room_info extends HttpServlet {
@@ -18,7 +20,7 @@ public class room_info extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 	 	dbconfig db=new dbconfig();
 	 	try {
-		Connection dbcon=db.getdbconfig();
+	 Connection dbcon=db.getdbconfig();
 	 String rname=request.getParameter("rname");
 	 String sql="select * from pension_list where rname=?";
 	 PreparedStatement ps=dbcon.prepareStatement(sql);

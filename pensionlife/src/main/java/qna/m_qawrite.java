@@ -78,7 +78,7 @@ public class m_qawrite extends HttpServlet {
 				qfile2_val = "";
 			}
 		}else {
-			if(qfile2_val.equals("")) {
+			if(!qfile2_val.equals("")) {
 				qfile1_val = filedburl+qfile1_val;
 				qfile2_val = ","+filedburl+qfile2_val;
 			}else {

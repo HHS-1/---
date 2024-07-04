@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 	<display-name>pensionlife</display-name>
+	
+	<!-- 회원가입 & 로그인 파트 -->
 	<servlet>
 	<servlet-name>check_id</servlet-name>
 	<servlet-class>sign.check_id</servlet-class>
@@ -64,6 +66,7 @@
 	<url-pattern>/mweb/view/change_pw.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 관리자파트 -->
 	<servlet>
 	<servlet-name>admin_login</servlet-name>
 	<servlet-class>sign.admin_login</servlet-class>
@@ -82,15 +85,7 @@
 	<url-pattern>/mweb/view/admin_logout.do</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
-	<servlet-name>reservation</servlet-name>
-	<servlet-class>reservation.room_info</servlet-class>
-	</servlet>
-	<servlet-mapping>
-	<servlet-name>reservation</servlet-name>
-	<url-pattern>/mweb/view/room_info.do</url-pattern>
-	</servlet-mapping>
-	
+	<!-- 게시판파트 -->
 	<servlet>
 	<servlet-name>m_qawrite</servlet-name>
 	<servlet-class>qna.m_qawrite</servlet-class>
@@ -127,4 +122,49 @@
 	<url-pattern>/mweb/view/admin_qawrite.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 예약파트 -->
+	<servlet>
+	<servlet-name>reserve_ok</servlet-name>
+	<servlet-class>reservation.reserve_ok</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>reserve_ok</servlet-name>
+	<url-pattern>/mweb/view/reserve_ok.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>reserve_dates</servlet-name>
+	<servlet-class>reservation.reserve_dates</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>reserve_dates</servlet-name>
+	<url-pattern>/mweb/view/reserve_dates.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>available_rooms</servlet-name>
+	<servlet-class>reservation.available_rooms</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>available_rooms</servlet-name>
+	<url-pattern>/mweb/view/available_rooms.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>reserve_data_delete</servlet-name>
+	<servlet-class>reservation.reserve_data_delete</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>reserve_data_delete</servlet-name>
+	<url-pattern>/mweb/view/reserve_data_delete.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>reservation</servlet-name>
+	<servlet-class>reservation.room_info</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>reservation</servlet-name>
+	<url-pattern>/mweb/view/room_info.do</url-pattern>
+	</servlet-mapping>
 </web-app>

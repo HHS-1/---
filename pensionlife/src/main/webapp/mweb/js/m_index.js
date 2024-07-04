@@ -15,6 +15,43 @@ function pop_close(){
 	pop.style.display = "none";
 }
 
+function login_pop_rck(){
+	var pop_rck = document.getElementById("popup_rck");
+	if(pop_rck.style.display=="none"){
+		pop_rck.style.display = "flex";
+	}
+	else{
+		pop_rck.style.display = "none";
+	}
+}
+
+//비회원 로그인 버튼
+function unmember_submit(){
+	var form_unmember=document.getElementById("form_unmember");
+	form_unmember.method="post";
+	form_unmember.action="./m_reservation_list.jsp";
+	form_unmember.submit();
+}
+//비회원 로그인 팝업창 닫기
+function pop_close_rck(){
+	var pop_rck = document.getElementById("popup_rck");
+	pop_rck.style.display = "none";
+}
+//비회원 로그인 팝업에서 회원 로그인 팝업 spa
+function login_pop_onrck(){
+	var pop = document.getElementById("popup");
+	var pop_rck = document.getElementById("popup_rck");
+	pop_rck.style.display = "none";
+	pop.style.display = "flex";
+}
+//로그인 팝업의 비회원 예약확인 버튼
+function unmember_login(){
+	var pop = document.getElementById("popup");
+	var pop_rck = document.getElementById("popup_rck");
+	pop_rck.style.display = "flex";
+	pop.style.display = "none";
+}
+
 //페이지 이동
 function page_location(n){
 	var url = "";
@@ -42,6 +79,8 @@ function reservation(c){
 			frm.submit();
 }
 
+
+
 $(()=>{ //로그인,로그아웃
 
 	//로그인
@@ -68,8 +107,8 @@ $(()=>{ //로그인,로그아웃
 			success : function(success){
 				console.log(success);
 				if(success=="true"){
-					alert('로그인 성공');
-	    			location.href='./m_index.jsp';
+					
+	    			location.reload();
 				}
 			},
 			error : ((error)=>{
