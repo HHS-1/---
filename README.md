@@ -20,7 +20,7 @@
 ---------------
 <details>
   <summary>하현수</summary>
-  --하현수 파트 설명
+  --회원가입, 로그인, 관리자페이지 로그인
 </details>
 
 <details>
