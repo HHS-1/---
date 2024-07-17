@@ -30,7 +30,7 @@
 
 <details>
   <summary>신희문</summary>
-  --신희문 파트 설명
+  --예약프로세스,예약리스트,메인홈
 </details>
 
 
