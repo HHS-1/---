@@ -25,7 +25,7 @@
 
 <details>
   <summary>명동건</summary>
-  --명동건 파트 설명
+  --회원 게시판, 관리자 게시판 (쓰기,수정,삭제)
 </details>
 
 <details>
