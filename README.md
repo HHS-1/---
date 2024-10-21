@@ -20,17 +20,17 @@
 ---------------
 <details>
   <summary>하현수</summary>
-  회원가입, 로그인, 관리자페이지 로그인
+  --회원가입, 로그인, 관리자페이지 로그인
 </details>
 
 <details>
   <summary>명동건</summary>
-  회원 게시판, 관리자 게시판 (쓰기,수정,삭제)
+  --회원 게시판, 관리자 게시판 (쓰기,수정,삭제)
 </details>
 
 <details>
   <summary>신희문</summary>
-  예약프로세스,예약리스트,메인홈
+  --예약프로세스,예약리스트,메인홈
 </details>
 
 
